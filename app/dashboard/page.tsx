@@ -151,8 +151,8 @@ export default function DashboardPage() {
 
                     <div className="flex justify-center flex-1">
                         <TabsList className="grid grid-cols-2 w-full max-w-xs h-10 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-full p-1 shadow-sm">
-                            <TabsTrigger value="evidence" className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-900 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white transition-all text-sm font-medium">Evidence</TabsTrigger>
-                            <TabsTrigger value="chatbot" className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-900 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white transition-all text-sm font-medium">Chatbot</TabsTrigger>
+                            <TabsTrigger value="evidence" className="rounded-full data-active:!bg-[#B21563] data-active:!text-white hover:text-[#B21563] transition-all text-sm font-medium">Evidence</TabsTrigger>
+                            <TabsTrigger value="chatbot" className="rounded-full data-active:!bg-[#B21563] data-active:!text-white hover:text-[#B21563] transition-all text-sm font-medium">Chatbot</TabsTrigger>
                         </TabsList>
                     </div>
 
