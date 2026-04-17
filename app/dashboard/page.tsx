@@ -130,10 +130,10 @@ export default function DashboardPage() {
             </Dialog>
 
             {/* Dashboard Content */}
-            <div className={`transition-all duration-300 ${showKeyModal ? "blur-md pointer-events-none" : ""}`}>
+            <Tabs defaultValue="evidence" className={`transition-all duration-300 flex flex-col min-h-screen ${showKeyModal ? "blur-md pointer-events-none" : ""}`}>
                 {/* Header */}
                 <header className="bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 px-6 py-4 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 flex-1">
                         <div className="relative group cursor-pointer" onClick={() => router.push("/profile")}>
                             <Avatar className="h-10 w-10 border-2 border-transparent transition-all group-hover:border-blue-500">
                                 <AvatarImage src={userRecord.profilePicUrl} />
@@ -149,7 +149,14 @@ export default function DashboardPage() {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex justify-center flex-1">
+                        <TabsList className="grid grid-cols-2 w-full max-w-xs h-10 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-full p-1 shadow-sm">
+                            <TabsTrigger value="evidence" className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-900 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white transition-all text-sm font-medium">Evidence</TabsTrigger>
+                            <TabsTrigger value="chatbot" className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-900 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white transition-all text-sm font-medium">Chatbot</TabsTrigger>
+                        </TabsList>
+                    </div>
+
+                    <div className="flex items-center justify-end gap-3 flex-1">
                         <Button
                             variant="ghost"
                             size="icon"
@@ -167,25 +174,16 @@ export default function DashboardPage() {
                 </header>
 
                 {/* Main Content Area */}
-                <main className="p-6 max-w-5xl mx-auto space-y-6">
-                    <Tabs defaultValue="evidence" className="w-full">
-                        <div className="flex justify-center w-full mb-8">
-                            <TabsList className="grid grid-cols-2 w-full max-w-xs h-12 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full p-1 shadow-sm">
-                                <TabsTrigger value="evidence" className="rounded-full data-[state=active]:bg-zinc-900 dark:data-[state=active]:bg-zinc-100 data-[state=active]:text-white dark:data-[state=active]:text-zinc-900 transition-all text-sm font-medium">Evidence</TabsTrigger>
-                                <TabsTrigger value="chatbot" className="rounded-full data-[state=active]:bg-zinc-900 dark:data-[state=active]:bg-zinc-100 data-[state=active]:text-white dark:data-[state=active]:text-zinc-900 transition-all text-sm font-medium">Chatbot</TabsTrigger>
-                            </TabsList>
-                        </div>
-                        
-                        <TabsContent value="evidence" className="mt-0 focus-visible:outline-none focus-visible:ring-0">
+                <main className="flex-1 w-full p-4 mx-auto">
+                        <TabsContent value="evidence" className="mt-0 h-full focus-visible:outline-none focus-visible:ring-0">
                             <EvidenceSection />
                         </TabsContent>
                         
-                        <TabsContent value="chatbot" className="mt-0 focus-visible:outline-none focus-visible:ring-0">
+                        <TabsContent value="chatbot" className="mt-0 h-full focus-visible:outline-none focus-visible:ring-0">
                             <ChatbotSection />
                         </TabsContent>
-                    </Tabs>
                 </main>
-            </div>
+            </Tabs>
         </div>
     );
 }

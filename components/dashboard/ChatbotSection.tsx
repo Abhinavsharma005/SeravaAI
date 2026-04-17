@@ -17,6 +17,19 @@ export default function ChatbotSection() {
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleAttachmentClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      console.log("Selected file:", file.name);
+      // Logic for file handling goes here later
+    }
+  };
 
   const presetQuestions = [
     { text: "Are you safe right now?", icon: <Shield className="w-4 h-4 text-emerald-500" /> },
@@ -55,7 +68,7 @@ export default function ChatbotSection() {
   }, [messages, isTyping]);
 
   return (
-    <div className="flex h-[700px] w-full rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
+    <div className="flex h-[calc(100vh-120px)] w-full rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
       
       {/* Sidebar */}
       {sidebarOpen && (
@@ -107,8 +120,9 @@ export default function ChatbotSection() {
             <h1 className="text-4xl font-bold text-zinc-900 dark:text-white mb-8 tracking-tight">Good afternoon</h1>
             
             <div className="w-full max-w-2xl relative">
+              <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileChange} />
               <div className="relative flex items-center w-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900/50 rounded-xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-[#B21563]/50 transition-all">
-                <Paperclip className="w-5 h-5 text-zinc-400 mr-2 cursor-pointer hover:text-zinc-600 dark:hover:text-zinc-300" />
+                <Paperclip onClick={handleAttachmentClick} className="w-5 h-5 text-zinc-400 mr-2 cursor-pointer hover:text-zinc-600 dark:hover:text-zinc-300" />
                 <input 
                   type="text" 
                   value={inputValue}
@@ -187,7 +201,8 @@ export default function ChatbotSection() {
 
             <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#121212]">
               <div className="max-w-4xl mx-auto relative flex items-center w-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900/50 rounded-xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-[#B21563]/50 transition-all">
-                <Paperclip className="w-5 h-5 text-zinc-400 mr-2 cursor-pointer hover:text-zinc-600 dark:hover:text-zinc-300" />
+                <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileChange} />
+                <Paperclip onClick={handleAttachmentClick} className="w-5 h-5 text-zinc-400 mr-2 cursor-pointer hover:text-zinc-600 dark:hover:text-zinc-300" />
                 <input 
                   type="text" 
                   value={inputValue}
