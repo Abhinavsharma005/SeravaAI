@@ -210,7 +210,7 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
   // --- Save a single message to the DB for the active chat session ---
   const saveMessageToDb = async (msg: Message, title?: string) => {
     try {
-      await fetch("/api/chat", {
+      const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -222,6 +222,10 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
           ...(title ? { title } : {}),
         }),
       });
+      if (!res.ok) {
+        const errBody = await res.text();
+        console.error("DB save failed:", res.status, errBody);
+      }
     } catch (err) {
       console.error("Failed to save message to DB:", err);
     }

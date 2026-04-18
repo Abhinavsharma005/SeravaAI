@@ -52,5 +52,13 @@ const chatSchema = new mongoose.Schema({
 // Compound index for fast lookups: all chats for a user, sorted by latest
 chatSchema.index({ userId: 1, updatedAt: -1 });
 
-const Chat = mongoose.models.Chat || mongoose.model("Chat", chatSchema);
+// In dev, the old cached model may have the wrong schema — force re-register
+if (mongoose.models.Chat) {
+  delete mongoose.models.Chat;
+}
+const Chat = mongoose.model("Chat", chatSchema);
+
+// Drop stale indexes from old schema (e.g., unique userId) and sync with current schema
+Chat.syncIndexes().catch((err: any) => console.warn("Chat syncIndexes:", err.message));
+
 export default Chat;
