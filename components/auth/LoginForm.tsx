@@ -41,7 +41,18 @@ export default function LoginForm() {
         const auth = getAuth(app);
 
         try {
-            await signInWithEmailAndPassword(auth, data.email, data.password);
+            const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
+            
+            // Auto-sync into MongoDB in case the user exists in Firebase but was wiped from DB.
+            await fetch("/api/auth/sync", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    uid: userCredential.user.uid, 
+                    email: userCredential.user.email 
+                }),
+            });
+
             router.push("/dashboard");
         } catch (error: unknown) {
             console.error("Error signing in", error);
