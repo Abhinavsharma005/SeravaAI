@@ -23,6 +23,7 @@ import ChatbotSection from "@/components/dashboard/ChatbotSection";
 import StressMeter from "@/components/dashboard/StressMeter";
 
 interface UserRecord {
+    uid: string;
     name?: string;
     profilePicUrl?: string;
     secretKey?: string;
@@ -193,7 +194,7 @@ export default function DashboardPage() {
                         </TabsContent>
                         
                         <TabsContent value="chatbot" className="mt-0 h-full focus-visible:outline-none focus-visible:ring-0">
-                            <ChatbotSection />
+                            <ChatbotSection userRecord={userRecord} uid={userRecord.uid} />
                         </TabsContent>
                 </main>
             </Tabs>

@@ -9,9 +9,23 @@ interface Message {
   sender: "user" | "bot";
   message: string;
   timestamp: Date;
+  isError?: boolean;
 }
 
-export default function ChatbotSection() {
+interface UserRecord {
+  name?: string;
+  age?: string;
+  gender?: string;
+  maritalStatus?: string;
+  profilePicUrl?: string;
+}
+
+interface ChatbotSectionProps {
+  userRecord: UserRecord;
+  uid: string;
+}
+
+export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [chatSessions, setChatSessions] = useState<{id: string, title: string, messages: Message[]}[]>([
     { id: '1', title: 'Initial System Consultation', messages: [] }
@@ -73,17 +87,92 @@ export default function ChatbotSection() {
     setInputValue("");
     setIsTyping(true);
 
-    // TODO: Call API here using the configurable API placeholder
-    
-    setTimeout(() => {
+    try {
+      // Construct user_info from profile data
+      const userInfoParts = [];
+      if (userRecord.age) userInfoParts.push(`Age: ${userRecord.age}`);
+      if (userRecord.gender) userInfoParts.push(`Gender: ${userRecord.gender}`);
+      if (userRecord.maritalStatus) userInfoParts.push(`Marital Status: ${userRecord.maritalStatus}`);
+      const userInfoStr = userInfoParts.join(", ") || "No additional profile info provided.";
+
+      // Map local history to API format, strictly filtering out any technical errors
+      const history = messages
+        .filter(msg => !msg.isError)
+        .map(msg => ({
+          role: msg.sender === "user" ? "user" : "assistant",
+          content: msg.message
+        }));
+
+      const res = await fetch("https://stress-ai-service-n783.onrender.com/analyze-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: `${uid}-${activeChatId}`,
+          user_info: userInfoStr,
+          message: text,
+          history: history,
+          memory_summary: "" 
+        }),
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("API Error Response:", errorText);
+        throw new Error(`API call failed: ${res.status} ${errorText}`);
+      }
+
+      const data = await res.json();
+
       const botMsg: Message = { 
         sender: "bot", 
-        message: "I am an AI assistant simulating a response. The actual API integration will be implemented here later.", 
+        message: data.response || "I'm sorry, I couldn't process that request.", 
         timestamp: new Date() 
       };
-      setChatSessions((prev) => prev.map(chat => chat.id === activeChatId ? { ...chat, messages: [...chat.messages, botMsg] } : chat));
+
+      setChatSessions((prev) => prev.map(chat => 
+        chat.id === activeChatId ? { ...chat, messages: [...chat.messages, botMsg] } : chat
+      ));
+
+      // Optional: Handle stress_score or emotions here if needed for parent state
+      console.log("Chat Analysis:", { 
+        emotions: data.emotions, 
+        stress_score: data.stress_score, 
+        risk: data.risk 
+      });
+
+    } catch (error: any) {
+      console.error("Chatbot Error:", error);
+      
+      // Attempt to "rescue" the AI response if the backend failed to parse it
+      let rescuedMessage = "I encountered an error connecting to my safety service. Please try again soon.";
+      
+      const errorStr = error.toString();
+      if (errorStr.includes("AI returned malformed JSON") && errorStr.includes("model response:")) {
+        const parts = errorStr.split("model response:");
+        if (parts.length > 1) {
+          // Clean up the extracted text: remove newlines, extreme whitespace, and JSON characters
+          rescuedMessage = parts[1].trim()
+            .replace(/\\n/g, ' ')
+            .replace(/^"/, '')
+            .replace(/"$/, '')
+            .replace(/}$/, '')
+            .trim();
+        }
+      }
+
+      const errorMsg: Message = { 
+        sender: "bot", 
+        message: rescuedMessage, 
+        timestamp: new Date(),
+        isError: true
+      };
+      
+      setChatSessions((prev) => prev.map(chat => 
+        chat.id === activeChatId ? { ...chat, messages: [...chat.messages, errorMsg] } : chat
+      ));
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   useEffect(() => {
