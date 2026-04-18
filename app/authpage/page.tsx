@@ -55,26 +55,42 @@ function AuthContent() {
 
   if (checkingLink) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-zinc-50 dark:bg-[#09090b]">
-        <p className="text-zinc-500 animate-pulse">Completing sign in...</p>
+      <div className="relative flex min-h-screen w-full items-center justify-center bg-white dark:bg-[#09090b] overflow-hidden">
+        {/* Background Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#B21563]/20 rounded-full blur-[120px] -z-0" />
+        <p className="relative z-10 text-zinc-500 animate-pulse font-medium">Completing sign in...</p>
       </div>
     );
   }
 
   return (
-    <div className="flex h-screen w-full items-center justify-center bg-zinc-50 dark:bg-[#09090b] p-4">
-      <div className="w-full max-w-md">
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-white dark:bg-[#09090b] p-4 overflow-hidden text-black dark:text-zinc-50 font-sans">
+      {/* Background Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#B21563]/20 rounded-full blur-[120px] -z-0" />
+      
+      <div className="relative w-full max-w-md z-10">
+        <div className="absolute -inset-1 bg-[#DB4891]/20 rounded-[2rem] blur-2xl -z-10" />
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-4">
-            <TabsTrigger value="login">Login</TabsTrigger>
-            <TabsTrigger value="signup">Sign Up</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 mb-8 bg-zinc-100/80 dark:bg-zinc-900/80 p-1 rounded-xl h-11 border border-zinc-200 dark:border-zinc-800">
+            <TabsTrigger 
+              value="login" 
+              className="rounded-lg h-full data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800 data-[state=active]:text-[#B21563] data-[state=active]:shadow-sm transition-all text-zinc-600 dark:text-zinc-400 font-medium"
+            >
+              Login
+            </TabsTrigger>
+            <TabsTrigger 
+              value="signup"
+              className="rounded-lg h-full data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800 data-[state=active]:text-[#B21563] data-[state=active]:shadow-sm transition-all text-zinc-600 dark:text-zinc-400 font-medium"
+            >
+              Sign Up
+            </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="login">
+          <TabsContent value="login" className="mt-0 focus-visible:outline-none">
             <LoginForm />
           </TabsContent>
           
-          <TabsContent value="signup">
+          <TabsContent value="signup" className="mt-0 focus-visible:outline-none">
             <SignupForm />
           </TabsContent>
         </Tabs>

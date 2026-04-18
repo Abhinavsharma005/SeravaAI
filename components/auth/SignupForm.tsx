@@ -83,7 +83,7 @@ export default function SignupForm() {
                             id="signup-email"
                             placeholder="name@example.com" 
                             {...register("email")} 
-                            className="border-zinc-200 bg-white"
+                            className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950"
                         />
                         {errors.email && (
                             <p className="text-sm text-red-500 font-medium">{errors.email.message}</p>
@@ -98,7 +98,7 @@ export default function SignupForm() {
                                 type={showPassword ? "text" : "password"}
                                 placeholder="Create a password"
                                 {...register("password")}
-                                className="border-zinc-200 bg-white pr-10"
+                                className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 pr-10"
                             />
                             <button
                                 type="button"
@@ -125,7 +125,7 @@ export default function SignupForm() {
                                 type={showConfirmPassword ? "text" : "password"}
                                 placeholder="Confirm your password"
                                 {...register("confirmPassword")}
-                                className="border-zinc-200 bg-white pr-10"
+                                className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 pr-10"
                             />
                             <button
                                 type="button"
@@ -155,11 +155,11 @@ export default function SignupForm() {
                 </form>
             </CardContent>
 
-            <CardFooter className="justify-center text-sm text-zinc-500 pt-2 border-t border-zinc-100">
+            <CardFooter className="justify-center text-sm text-zinc-500 dark:text-zinc-400 pt-4 border-t border-zinc-100 dark:border-zinc-800/50">
                 Already have an account?
                 <button
                     onClick={() => router.push("/authpage?mode=login")}
-                    className="ml-1 font-medium text-zinc-900 hover:underline"
+                    className="ml-1 font-semibold text-[#B21563] hover:underline"
                 >
                     Login
                 </button>
