@@ -328,7 +328,7 @@ const sendSequentialSMS = async (contacts: string[], message: string) => {
   return (
     <>
       {/* 🔴 Floating Button */}
-      <div className="tooltip-container">
+      <div className="tooltip-container mb-3">
         <button
           aria-describedby="help-tooltip"
           className="help-button"
