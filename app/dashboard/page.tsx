@@ -187,7 +187,7 @@ export default function DashboardPage() {
 
                         {/* Mobile Dropdown */}
                         <div className="md:hidden">
-                            <Select value={activeTab} onValueChange={setActiveTab}>
+                            <Select value={activeTab} onValueChange={(val) => val && setActiveTab(val)}>
                                 <SelectTrigger className="w-[140px] bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 rounded-full">
                                     <SelectValue placeholder="Select Section" />
                                 </SelectTrigger>
