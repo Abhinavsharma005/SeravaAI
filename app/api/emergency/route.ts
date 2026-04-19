@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     const { action, location, uid } = await req.json();
     console.log("EMERGENCY REQUEST:", { action, location, uid });
 
-    const user = await User.findOne({ uid });
+    const user = await User.findOne({ uid }).lean();
 
     if (!user) {
       return NextResponse.json(
