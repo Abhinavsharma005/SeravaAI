@@ -2,8 +2,8 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
-  Plus, Search, PanelLeft, Paperclip, ArrowUp, Zap, Heart,
-  CheckCircle, Clock, Users, Shield, MessageSquare, Bot, X, Menu
+  Plus, Search, PanelLeft, ArrowUp, Zap, Heart,
+  CheckCircle, Clock, Users, Shield, MessageSquare, Bot, X, Menu, Mic, MicOff
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -76,7 +76,10 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
   }, []);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const fileInputRef   = useRef<HTMLInputElement>(null);
+  
+  // Voice Recognition States
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef<any>(null);
 
   // ── Refs for avoiding stale closures without extra deps ──────────────────
   const chatSessionsRef = useRef<ChatSession[]>([]);   // mirrors chatSessions
@@ -224,18 +227,65 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
     }, 600);
   };
 
-  const handleAttachmentClick = () => fileInputRef.current?.click();
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) console.log("Selected file:", file.name);
-  };
-
   const handleNewChat = () => {
     createNewChat();
     setSearchQuery("");
     if (!sidebarOpen) setSidebarOpen(true);
   };
+
+  // ── Voice Typing Implementation ───────────────────────────────────────────
+  const toggleVoiceTyping = useCallback(() => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+      return;
+    }
+
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Speech recognition is not supported in this browser. Please use Chrome or Edge.");
+      return;
+    }
+
+    if (!recognitionRef.current) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = "en-US";
+
+      recognition.onresult = (event: any) => {
+        let transcript = "";
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            transcript += event.results[i][0].transcript;
+          }
+        }
+        if (transcript) {
+          setInputValue(prev => prev + (prev.endsWith(" ") || prev === "" ? "" : " ") + transcript);
+        }
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognitionRef.current = recognition;
+    }
+
+    try {
+      recognitionRef.current.start();
+      setIsListening(true);
+    } catch (err) {
+      console.error("Speech recognition start error:", err);
+      setIsListening(false);
+    }
+  }, [isListening]);
+
+  useEffect(() => {
+    return () => {
+      recognitionRef.current?.stop();
+    };
+  }, []);
 
   const presetQuestions = [
     { text: "Are you safe right now?",                            icon: <Shield      className="w-4 h-4 text-emerald-500" /> },
@@ -600,9 +650,7 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
 
               {/* Message Input Area */}
               <div className="w-full">
-                <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileChange} />
                 <div className="relative flex items-center w-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900/50 rounded-xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-[#B21563]/50 transition-all">
-                  <Paperclip onClick={handleAttachmentClick} className="w-5 h-5 text-zinc-400 mr-2 cursor-pointer hover:text-zinc-600 dark:hover:text-zinc-300" />
                   <input
                     type="text"
                     value={inputValue}
@@ -611,17 +659,28 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
                     placeholder="Type your message here..."
                     className="flex-1 bg-transparent border-none outline-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500"
                   />
-                  <Button
-                    size="icon"
-                    className={`ml-2 h-8 w-8 rounded-md transition-colors ${
-                      inputValue.trim()
-                        ? "bg-[#B21563] text-white hover:bg-[#911050]"
-                        : "bg-black text-white dark:bg-white dark:text-black pointer-events-none opacity-50"
-                    }`}
-                    onClick={() => handleSend(inputValue)}
-                  >
-                    <ArrowUp className="w-4 h-4" />
-                  </Button>
+                  <div className="flex items-center gap-2 ml-2">
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      onClick={toggleVoiceTyping}
+                      className={`h-8 w-8 rounded-md transition-all ${isListening ? "text-red-500 bg-red-50 dark:bg-red-900/20 animate-pulse" : "text-black dark:text-zinc-100 bg-transparent hover:text-[#B21563] dark:hover:text-[#B21563] hover:bg-zinc-100 dark:hover:bg-zinc-800"}`}
+                      title={isListening ? "Stop Voice Typing" : "Voice Typing"}
+                    >
+                      {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                    </Button>
+                    <Button
+                      size="icon"
+                      className={`h-8 w-8 rounded-md transition-colors ${
+                        inputValue.trim()
+                          ? "bg-[#B21563] text-white hover:bg-[#911050]"
+                          : "bg-black text-white dark:bg-white dark:text-black pointer-events-none opacity-50"
+                      }`}
+                      onClick={() => handleSend(inputValue)}
+                    >
+                      <ArrowUp className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -668,8 +727,6 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
 
             <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#121212]">
               <div className="max-w-4xl mx-auto relative flex items-center w-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900/50 rounded-xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-[#B21563]/50 transition-all">
-                <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileChange} />
-                <Paperclip onClick={handleAttachmentClick} className="w-5 h-5 text-zinc-400 mr-2 cursor-pointer hover:text-zinc-600 dark:hover:text-zinc-300" />
                 <input
                   type="text"
                   value={inputValue}
@@ -678,17 +735,28 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
                   placeholder="Type your message here..."
                   className="flex-1 bg-transparent border-none outline-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500"
                 />
-                <Button
-                  size="icon"
-                  className={`ml-2 h-8 w-8 rounded-md transition-colors ${
-                    inputValue.trim()
-                      ? "bg-[#B21563] text-white hover:bg-[#911050]"
-                      : "bg-black text-white dark:bg-white dark:text-black pointer-events-none opacity-50"
-                  }`}
-                  onClick={() => handleSend(inputValue)}
-                >
-                  <ArrowUp className="w-4 h-4" />
-                </Button>
+                <div className="flex items-center gap-2 ml-2">
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={toggleVoiceTyping}
+                    className={`h-8 w-8 rounded-md transition-all ${isListening ? "text-red-500 bg-red-50 dark:bg-red-900/20 animate-pulse" : "text-black dark:text-zinc-100 bg-transparent hover:text-[#B21563] dark:hover:text-[#B21563] hover:bg-zinc-100 dark:hover:bg-zinc-800"}`}
+                    title={isListening ? "Stop Voice Typing" : "Voice Typing"}
+                  >
+                    {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                  </Button>
+                  <Button
+                    size="icon"
+                    className={`h-8 w-8 rounded-md transition-colors ${
+                      inputValue.trim()
+                        ? "bg-[#B21563] text-white hover:bg-[#911050]"
+                        : "bg-black text-white dark:bg-white dark:text-black pointer-events-none opacity-50"
+                    }`}
+                    onClick={() => handleSend(inputValue)}
+                  >
+                    <ArrowUp className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             </div>
           </>
