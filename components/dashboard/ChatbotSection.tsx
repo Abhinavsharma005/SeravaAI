@@ -41,12 +41,12 @@ interface ChatbotSectionProps {
 
 // --- Mood Constants ---
 const MOOD_EMOJIS = [
-  { emoji: "😄", label: "Great",     weight: 0 },
-  { emoji: "🙂", label: "Good",      weight: 1 },
-  { emoji: "😐", label: "Okay",      weight: 2 },
+  { emoji: "😄", label: "Great", weight: 0 },
+  { emoji: "🙂", label: "Good", weight: 1 },
+  { emoji: "😐", label: "Okay", weight: 2 },
   { emoji: "😕", label: "Not great", weight: 3 },
-  { emoji: "😢", label: "Sad",       weight: 4 },
-  { emoji: "😭", label: "Terrible",  weight: 5 },
+  { emoji: "😢", label: "Sad", weight: 4 },
+  { emoji: "😭", label: "Terrible", weight: 5 },
 ];
 
 // --- AI Emotion → Emoji Mapper ---
@@ -97,11 +97,10 @@ function MessageInput({ inputValue, setInputValue, onSend, isListening, toggleVo
           </Button>
           <Button
             size="icon"
-            className={`h-8 w-8 rounded-md transition-colors ${
-              inputValue.trim()
+            className={`h-8 w-8 rounded-md transition-colors ${inputValue.trim()
                 ? "bg-[#B21563] text-white hover:bg-[#911050]"
                 : "bg-black text-white dark:bg-white dark:text-black pointer-events-none opacity-50"
-            }`}
+              }`}
             onClick={onSend}
           >
             <ArrowUp className="w-4 h-4" />
@@ -110,15 +109,15 @@ function MessageInput({ inputValue, setInputValue, onSend, isListening, toggleVo
       </div>
 
       {/* Mobile View: High Box Style */}
-      <div className="md:hidden flex flex-col w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[2rem] p-5 shadow-sm mb-4">
+      <div className="md:hidden flex flex-col w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[2rem] p-4 shadow-sm mb-4">
         <textarea
           value={inputValue}
           onChange={e => setInputValue(e.target.value)}
           placeholder="Type your message here..."
-          className="w-full bg-transparent border-none outline-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 resize-none h-[70px] pt-1 text-base"
+          className="w-full bg-transparent border-none outline-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 resize-none h-[48px] pt-1 text-base"
         />
-        <div className="flex justify-between items-center mt-3 pt-2">
-          <button 
+        <div className="flex justify-between items-center mt-1 pt-1">
+          <button
             onClick={triggerEmergency}
             className="text-[#B21563] font-medium text-lg hover:opacity-80 active:scale-95 transition-all"
           >
@@ -134,11 +133,10 @@ function MessageInput({ inputValue, setInputValue, onSend, isListening, toggleVo
             <button
               onClick={onSend}
               disabled={!inputValue.trim()}
-              className={`p-2.5 rounded-xl transition-all ${
-                inputValue.trim() 
-                  ? "bg-[#B21563] text-white shadow-md active:scale-90" 
+              className={`p-2.5 rounded-xl transition-all ${inputValue.trim()
+                  ? "bg-[#B21563] text-white shadow-md active:scale-90"
                   : "bg-zinc-200 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-600"
-              }`}
+                }`}
             >
               <ArrowUp className="w-5 h-5 stroke-[2.5]" />
             </button>
@@ -155,12 +153,12 @@ function mapEmotionToEmoji(emotion: string): string {
 }
 
 export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps) {
-  const [sidebarOpen, setSidebarOpen]     = useState(true);
-  const [chatSessions, setChatSessions]   = useState<ChatSession[]>([]);
-  const [activeChatId, setActiveChatId]   = useState<string>("");
-  const [searchQuery, setSearchQuery]     = useState("");
-  const [inputValue, setInputValue]       = useState("");
-  const [isTyping, setIsTyping]           = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
+  const [activeChatId, setActiveChatId] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
 
   // Default sidebar to closed on mobile
   useEffect(() => {
@@ -170,14 +168,14 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
   }, []);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
+
   // Voice Recognition States
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<any>(null);
 
   // ── Refs for avoiding stale closures without extra deps ──────────────────
   const chatSessionsRef = useRef<ChatSession[]>([]);   // mirrors chatSessions
-  const fetchedChatIds  = useRef<Set<string>>(new Set()); // gate: never re-fetch
+  const fetchedChatIds = useRef<Set<string>>(new Set()); // gate: never re-fetch
 
   // Keep mirror ref in sync
   useEffect(() => {
@@ -185,12 +183,12 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
   }, [chatSessions]);
 
   // --- Mood State ---
-  const [showMoodModal, setShowMoodModal]             = useState(false);
-  const [moodModalDismissed, setMoodModalDismissed]   = useState(false);
+  const [showMoodModal, setShowMoodModal] = useState(false);
+  const [moodModalDismissed, setMoodModalDismissed] = useState(false);
   const [selectedMoodAnimation, setSelectedMoodAnimation] = useState<string | null>(null);
 
   const activeChat = chatSessions.find(c => c.id === activeChatId);
-  const messages   = activeChat?.messages || [];
+  const messages = activeChat?.messages || [];
 
   // ── Create a fresh local chat session ────────────────────────────────────
   const createNewChat = useCallback(() => {
@@ -382,12 +380,12 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
   }, []);
 
   const presetQuestions = [
-    { text: "Are you safe right now?",                            icon: <Shield      className="w-4 h-4 text-emerald-500" /> },
-    { text: "How has your day been today?",                       icon: <Clock       className="w-4 h-4 text-blue-500"    /> },
-    { text: "What happened recently to make you feel this way?",  icon: <Zap         className="w-4 h-4 text-amber-500"   /> },
-    { text: "Is this a recurring issue or the first time?",       icon: <CheckCircle className="w-4 h-4 text-purple-500"  /> },
-    { text: "Is there someone nearby you trust to talk to?",      icon: <Users       className="w-4 h-4 text-cyan-500"    /> },
-    { text: "Would you like to discuss your next steps or options?", icon: <Heart    className="w-4 h-4 text-rose-500"    /> },
+    { text: "Are you safe right now?", icon: <Shield className="w-4 h-4 text-emerald-500" /> },
+    { text: "How has your day been today?", icon: <Clock className="w-4 h-4 text-blue-500" /> },
+    { text: "What happened recently to make you feel this way?", icon: <Zap className="w-4 h-4 text-amber-500" /> },
+    { text: "Is this a recurring issue or the first time?", icon: <CheckCircle className="w-4 h-4 text-purple-500" /> },
+    { text: "Is there someone nearby you trust to talk to?", icon: <Users className="w-4 h-4 text-cyan-500" /> },
+    { text: "Would you like to discuss your next steps or options?", icon: <Heart className="w-4 h-4 text-rose-500" /> },
   ];
 
   // ── Save a single message to DB ───────────────────────────────────────────
@@ -440,8 +438,8 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
 
     try {
       const userInfoParts: string[] = [];
-      if (userRecord.age)           userInfoParts.push(`Age: ${userRecord.age}`);
-      if (userRecord.gender)        userInfoParts.push(`Gender: ${userRecord.gender}`);
+      if (userRecord.age) userInfoParts.push(`Age: ${userRecord.age}`);
+      if (userRecord.gender) userInfoParts.push(`Gender: ${userRecord.gender}`);
       if (userRecord.maritalStatus) userInfoParts.push(`Marital Status: ${userRecord.maritalStatus}`);
       const userInfoStr = userInfoParts.join(", ") || "No additional profile info provided.";
 
@@ -460,12 +458,12 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
           user_info: userInfoStr,
           message: text,
           history,
-          memory_summary: userRecord.summaryMap 
+          memory_summary: userRecord.summaryMap
             ? Object.entries(userRecord.summaryMap)
-                .sort((a,b) => b[0].localeCompare(a[0])) // latest first
-                .slice(0, 3) // last 3 days
-                .map(([date, text]) => `${date}: ${text}`)
-                .join("\n")
+              .sort((a, b) => b[0].localeCompare(a[0])) // latest first
+              .slice(0, 3) // last 3 days
+              .map(([date, text]) => `${date}: ${text}`)
+              .join("\n")
             : "",
         }),
       });
@@ -628,8 +626,8 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
 
       {/* ── Sidebar ── */}
       <div className={`
-        ${sidebarOpen 
-          ? "w-full absolute inset-0 z-30 bg-white dark:bg-[#0a0a0a] flex flex-col" 
+        ${sidebarOpen
+          ? "w-full absolute inset-0 z-30 bg-white dark:bg-[#0a0a0a] flex flex-col"
           : "hidden"} 
         md:relative md:flex md:flex-col md:transition-all md:duration-300 md:overflow-hidden md:border-r border-zinc-200 dark:border-zinc-800
         ${sidebarOpen ? "md:w-64" : "md:w-16"}
@@ -645,10 +643,10 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
                 Chat
               </div>
               {/* Close button for mobile overlay */}
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="md:hidden text-zinc-500" 
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden text-zinc-500"
                 onClick={() => setSidebarOpen(false)}
               >
                 <X className="w-5 h-5" />
@@ -705,11 +703,10 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
                 <div
                   key={chat.id}
                   onClick={() => setActiveChatId(chat.id)}
-                  className={`px-3 py-2 text-sm rounded-md cursor-pointer truncate transition-colors ${
-                    activeChatId === chat.id
+                  className={`px-3 py-2 text-sm rounded-md cursor-pointer truncate transition-colors ${activeChatId === chat.id
                       ? "bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-medium"
                       : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50"
-                  }`}
+                    }`}
                 >
                   {chat.title}
                 </div>
@@ -768,6 +765,17 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
                     </button>
                   ))}
                 </div>
+
+                {/* Desktop-only centered input for empty state */}
+                <div className="hidden md:block w-full">
+                  <MessageInput
+                    inputValue={inputValue}
+                    setInputValue={setInputValue}
+                    onSend={() => handleSend(inputValue)}
+                    isListening={isListening}
+                    toggleVoiceTyping={toggleVoiceTyping}
+                  />
+                </div>
               </div>
             </div>
           ) : (
@@ -779,11 +787,10 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
                       <Bot className="w-5 h-5 md:w-6 md:h-6 m-auto text-white" />
                     </Avatar>
                   )}
-                  <div className={`px-4 py-3 max-w-[85%] md:max-w-[80%] rounded-2xl ${
-                    msg.sender === "user"
+                  <div className={`px-4 py-3 max-w-[85%] md:max-w-[80%] rounded-2xl ${msg.sender === "user"
                       ? "bg-[#B21563] text-white rounded-tr-sm shadow-sm"
                       : "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-tl-sm border border-zinc-200 dark:border-zinc-700 shadow-sm"
-                  }`}>
+                    }`}>
                     <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.message}</p>
                   </div>
                   {msg.sender === "user" && (
@@ -811,9 +818,9 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
           )}
         </div>
 
-        {/* Sticky Input Area */}
-        <div className="p-4 md:p-6 bg-white dark:bg-[#121212] border-t border-zinc-200 dark:border-zinc-800 w-full max-w-4xl mx-auto">
-          <MessageInput 
+        {/* Sticky Input Area - Always visible on mobile, visible on desktop only when chat has started */}
+        <div className={`p-4 md:p-6 bg-white dark:bg-[#121212] md:border-t-0 border-t border-zinc-200 dark:border-zinc-800 w-full max-w-4xl mx-auto ${messages.length === 0 ? "md:hidden" : ""}`}>
+          <MessageInput
             inputValue={inputValue}
             setInputValue={setInputValue}
             onSend={() => handleSend(inputValue)}
