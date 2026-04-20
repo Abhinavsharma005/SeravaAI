@@ -230,16 +230,16 @@ export default function DashboardPage() {
 
                 {/* Main Content Area */}
                 <main className={`flex-1 w-full flex flex-col min-h-0 ${activeTab === "chatbot" ? "p-0 md:p-4" : "p-2 md:p-4"} mx-auto`}>
-                    <TabsContent value="evidence" className="mt-0 h-full focus-visible:outline-none focus-visible:ring-0">
+                    <TabsContent value="evidence" className="mt-0 h-full overflow-y-auto focus-visible:outline-none focus-visible:ring-0">
                         <EvidenceSection />
                     </TabsContent>
-                    <TabsContent value="stress" className="mt-0 h-full focus-visible:outline-none focus-visible:ring-0">
+                    <TabsContent value="stress" className="mt-0 h-full overflow-y-auto focus-visible:outline-none focus-visible:ring-0">
                         <StressMeter uid={userRecord.uid} />
                     </TabsContent>
                     <TabsContent value="chatbot" className="mt-0 h-full flex flex-col focus-visible:outline-none focus-visible:ring-0">
                         <ChatbotSection userRecord={userRecord} uid={userRecord.uid} />
                     </TabsContent>
-                    <TabsContent value="emergency" className="mt-0 h-full focus-visible:outline-none focus-visible:ring-0">
+                    <TabsContent value="emergency" className="mt-0 h-full overflow-y-auto focus-visible:outline-none focus-visible:ring-0">
                         <EmergencySection />
                     </TabsContent>
                 </main>
