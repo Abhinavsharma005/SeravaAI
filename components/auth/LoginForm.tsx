@@ -39,28 +39,56 @@ export default function LoginForm() {
         resolver: zodResolver(schema),
     });
 
-    const onSubmit = async (data: FormData) => {
-        const auth = getAuth(app);
+ // In components/auth/LoginForm.tsx, replace the onSubmit function:
 
-        try {
-            const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
-            
-            // Auto-sync into MongoDB in case the user exists in Firebase but was wiped from DB.
-            await fetch("/api/auth/sync", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ 
-                    uid: userCredential.user.uid, 
-                    email: userCredential.user.email 
-                }),
-            });
+const onSubmit = async (data: FormData) => {
+  const auth = getAuth(app);
 
-            router.push("/dashboard");
-        } catch (error: unknown) {
-            console.error("Error signing in", error);
-            alert("Error signing in: " + (error as Error).message);
-        }
-    };
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      data.email,
+      data.password
+    );
+
+    // Sync with backend
+    await fetch("/api/auth/sync", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        uid: userCredential.user.uid,
+        email: userCredential.user.email,
+      }),
+    });
+
+    // ── NEW: Check if user has secretKey ──
+    const meRes = await fetch("/api/auth/me", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ uid: userCredential.user.uid }),
+    });
+
+    if (meRes.ok) {
+      const meData = await meRes.json();
+
+      if (!meData.user.isProfileComplete) {
+        router.push("/profile");
+        return;
+      }
+
+      if (meData.user.secretKey) {
+        router.push("/notepad");
+      } else {
+        router.push("/dashboard");
+      }
+    } else {
+      router.push("/dashboard");
+    }
+  } catch (error: unknown) {
+    console.error("Error signing in", error);
+    alert("Error signing in: " + (error as Error).message);
+  }
+};
 
     return (
         <Card className="w-full border-zinc-200/50 shadow-sm">

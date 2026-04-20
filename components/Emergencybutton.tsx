@@ -119,9 +119,7 @@ export default function EmergencyButton() {
 
             setTimeout(() => {
               if (contacts.length > 1) {
-           
-                  sendSequentialSMS(contacts, message);
-                
+                sendSequentialSMS(contacts, message);
               }
             }, 2000);
           }
@@ -171,13 +169,30 @@ export default function EmergencyButton() {
 
   return (
     <>
-      {/* Floating Button - Hidden on mobile, shown on desktop */}
-      <div className="tooltip-container mb-3 hidden md:flex">
+      {/* Floating Button — TOP RIGHT, above chat input */}
+      
+<div className="fixed right-4 top-[80%] z-40">
         <button
-          className="help-button transition-transform hover:scale-105 active:scale-95"
+          className="
+            px-4 py-2.5
+            rounded-full
+            bg-gradient-to-r from-red-500 to-pink-500
+            hover:from-red-600 hover:to-pink-600
+            text-white
+            text-sm
+            font-semibold
+            shadow-lg shadow-red-500/30
+            hover:shadow-red-500/50
+            transition-all
+            duration-200
+            hover:scale-105
+            active:scale-95
+            animate-pulse
+            hover:animate-none
+          "
           onClick={() => setOpen(true)}
         >
-          Need Help?
+           Need Help?
         </button>
       </div>
 
