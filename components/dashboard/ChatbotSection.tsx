@@ -59,6 +59,96 @@ const EMOTION_TO_EMOJI: Record<string, string> = {
   fear: "😭", anger: "😭", despair: "😭", helpless: "😭", terror: "😭", panic: "😭",
 };
 
+// --- Sub-components ---
+interface MessageInputProps {
+  inputValue: string;
+  setInputValue: (val: string) => void;
+  onSend: () => void;
+  isListening: boolean;
+  toggleVoiceTyping: () => void;
+}
+
+function MessageInput({ inputValue, setInputValue, onSend, isListening, toggleVoiceTyping }: MessageInputProps) {
+  const triggerEmergency = () => {
+    window.dispatchEvent(new CustomEvent("aegis-trigger-emergency"));
+  };
+
+  return (
+    <>
+      {/* Desktop View: Pill Style */}
+      <div className="hidden md:flex max-w-4xl mx-auto relative items-center w-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900/50 rounded-xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-[#B21563]/50 transition-all">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={e => setInputValue(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && onSend()}
+          placeholder="Type your message here..."
+          className="flex-1 bg-transparent border-none outline-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500"
+        />
+        <div className="flex items-center gap-2 ml-2">
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={toggleVoiceTyping}
+            className={`h-8 w-8 rounded-md transition-all ${isListening ? "text-red-500 bg-red-50 dark:bg-red-900/20 animate-pulse" : "text-black dark:text-zinc-100 bg-transparent hover:text-[#B21563] dark:hover:text-[#B21563] hover:bg-zinc-100 dark:hover:bg-zinc-800"}`}
+            title={isListening ? "Stop Voice Typing" : "Voice Typing"}
+          >
+            {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+          </Button>
+          <Button
+            size="icon"
+            className={`h-8 w-8 rounded-md transition-colors ${
+              inputValue.trim()
+                ? "bg-[#B21563] text-white hover:bg-[#911050]"
+                : "bg-black text-white dark:bg-white dark:text-black pointer-events-none opacity-50"
+            }`}
+            onClick={onSend}
+          >
+            <ArrowUp className="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Mobile View: High Box Style */}
+      <div className="md:hidden flex flex-col w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[2rem] p-5 shadow-sm mb-4">
+        <textarea
+          value={inputValue}
+          onChange={e => setInputValue(e.target.value)}
+          placeholder="Type your message here..."
+          className="w-full bg-transparent border-none outline-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 resize-none h-[70px] pt-1 text-base"
+        />
+        <div className="flex justify-between items-center mt-3 pt-2">
+          <button 
+            onClick={triggerEmergency}
+            className="text-[#B21563] font-medium text-lg hover:opacity-80 active:scale-95 transition-all"
+          >
+            Need Help?
+          </button>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={toggleVoiceTyping}
+              className={`p-2 transition-all ${isListening ? "text-red-500 animate-pulse" : "text-zinc-600 dark:text-zinc-100"}`}
+            >
+              {isListening ? <MicOff className="w-6 h-6" /> : <Mic className="w-6 h-6" />}
+            </button>
+            <button
+              onClick={onSend}
+              disabled={!inputValue.trim()}
+              className={`p-2.5 rounded-xl transition-all ${
+                inputValue.trim() 
+                  ? "bg-zinc-500 text-white shadow-md active:scale-90" 
+                  : "bg-zinc-200 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-600"
+              }`}
+            >
+              <ArrowUp className="w-5 h-5 stroke-[2.5]" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
 function mapEmotionToEmoji(emotion: string): string {
   const key = emotion.toLowerCase().trim();
   return EMOTION_TO_EMOJI[key] || "😐";
@@ -483,7 +573,7 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
 
   // ── JSX ───────────────────────────────────────────────────────────────────
   return (
-    <div className="flex h-[calc(100vh-120px)] w-full rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
+    <div className="flex h-full w-full rounded-none md:rounded-2xl overflow-hidden border-none md:border md:border-zinc-200 dark:md:border-zinc-800 bg-white dark:bg-[#121212] md:shadow-sm">
 
       {/* ── Mood Modal ── */}
       {showMoodModal && (
@@ -539,10 +629,11 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
       {/* ── Sidebar ── */}
       <div className={`
         ${sidebarOpen 
-          ? "w-full absolute inset-0 z-20 bg-white dark:bg-[#0a0a0a]" 
-          : "w-12 md:w-16 bg-zinc-50 dark:bg-[#0a0a0a]"} 
-        md:relative md:w-auto ${sidebarOpen ? "md:w-64" : "md:w-16"}
-        flex-shrink-0 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-all duration-300 overflow-hidden
+          ? "w-full absolute inset-0 z-30 bg-white dark:bg-[#0a0a0a] flex flex-col" 
+          : "hidden"} 
+        md:relative md:flex md:flex-col md:transition-all md:duration-300 md:overflow-hidden md:border-r border-zinc-200 dark:border-zinc-800
+        ${sidebarOpen ? "md:w-64" : "md:w-16"}
+        flex-shrink-0 transition-all duration-300
       `}>
         <div className={`p-4 flex items-center ${sidebarOpen ? "justify-between" : "justify-center"}`}>
           {sidebarOpen ? (
@@ -629,7 +720,21 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
       </div>
 
       {/* ── Main Chat Area ── */}
-      <div className="flex-1 flex flex-col min-w-0 bg-white dark:bg-[#121212] relative">
+      <div className="flex-1 flex flex-col min-w-0 bg-white dark:bg-[#121212] relative h-full">
+        {/* Mobile Hamburger Button - Top Left */}
+        {!sidebarOpen && (
+          <div className="md:hidden absolute top-2 left-2 z-20">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(true)}
+              className="text-zinc-600 dark:text-zinc-400 h-9 w-9 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            >
+              <Menu className="w-5 h-5" />
+            </Button>
+          </div>
+        )}
+
         <div className="absolute top-4 left-4 z-10 hidden md:block">
           <Button
             variant="ghost"
@@ -641,83 +746,48 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
           </Button>
         </div>
 
-        {messages.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center p-6 mt-12">
-            <h1 className="text-4xl font-bold text-zinc-900 dark:text-white mb-8 tracking-tight">
-              Good afternoon
-            </h1>
+        {/* Messages List / Empty State area - Scrollable */}
+        <div className="flex-1 overflow-y-auto scroll-smooth">
+          {messages.length === 0 ? (
+            <div className="min-h-full flex flex-col items-center justify-center p-6 pt-20 md:pt-6 bg-white dark:bg-[#121212]">
+              <h1 className="text-4xl font-bold text-zinc-900 dark:text-white mb-8 tracking-tight text-center">
+                Good afternoon
+              </h1>
 
-            <div className="w-full max-w-2xl relative flex flex-col md:flex-col-reverse items-center">
-              {/* Preset Questions - Above Input on Mobile, Below Input on Desktop */}
-              <div className="flex flex-wrap gap-2 my-6 md:mt-6 md:mb-0 justify-center">
-                {presetQuestions.map((q, i) => (
-                  <button
-                    key={i}
-                    onClick={() => handleSend(q.text)}
-                    className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-                  >
-                    {q.icon}
-                    {q.text}
-                  </button>
-                ))}
-              </div>
-
-              {/* Message Input Area */}
-              <div className="w-full">
-                <div className="relative flex items-center w-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900/50 rounded-xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-[#B21563]/50 transition-all">
-                  <input
-                    type="text"
-                    value={inputValue}
-                    onChange={e => setInputValue(e.target.value)}
-                    onKeyDown={e => e.key === "Enter" && handleSend(inputValue)}
-                    placeholder="Type your message here..."
-                    className="flex-1 bg-transparent border-none outline-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500"
-                  />
-                  <div className="flex items-center gap-2 ml-2">
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      onClick={toggleVoiceTyping}
-                      className={`h-8 w-8 rounded-md transition-all ${isListening ? "text-red-500 bg-red-50 dark:bg-red-900/20 animate-pulse" : "text-black dark:text-zinc-100 bg-transparent hover:text-[#B21563] dark:hover:text-[#B21563] hover:bg-zinc-100 dark:hover:bg-zinc-800"}`}
-                      title={isListening ? "Stop Voice Typing" : "Voice Typing"}
+              <div className="w-full max-w-2xl flex flex-col items-center">
+                {/* Preset Questions */}
+                <div className="flex flex-wrap gap-2 my-6 justify-center">
+                  {presetQuestions.map((q, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleSend(q.text)}
+                      className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
                     >
-                      {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-                    </Button>
-                    <Button
-                      size="icon"
-                      className={`h-8 w-8 rounded-md transition-colors ${
-                        inputValue.trim()
-                          ? "bg-[#B21563] text-white hover:bg-[#911050]"
-                          : "bg-black text-white dark:bg-white dark:text-black pointer-events-none opacity-50"
-                      }`}
-                      onClick={() => handleSend(inputValue)}
-                    >
-                      <ArrowUp className="w-4 h-4" />
-                    </Button>
-                  </div>
+                      {q.icon}
+                      {q.text}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <>
-            <div className="flex-1 overflow-y-auto px-4 py-6 md:px-8 space-y-6 pt-16">
+          ) : (
+            <div className="p-4 py-8 md:p-8 md:pt-16 space-y-6">
               {messages.map((msg, i) => (
-                <div key={i} className={`flex gap-4 ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
+                <div key={i} className={`flex gap-3 md:gap-4 ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
                   {msg.sender === "bot" && (
-                    <Avatar className="w-8 h-8 rounded shrink-0 bg-[#B21563]">
-                      <Bot className="w-5 h-5 m-auto text-white" />
+                    <Avatar className="w-8 h-8 md:w-10 md:h-10 rounded shrink-0 bg-[#B21563]">
+                      <Bot className="w-5 h-5 md:w-6 md:h-6 m-auto text-white" />
                     </Avatar>
                   )}
-                  <div className={`px-4 py-3 max-w-[80%] rounded-2xl ${
+                  <div className={`px-4 py-3 max-w-[85%] md:max-w-[80%] rounded-2xl ${
                     msg.sender === "user"
-                      ? "bg-[#B21563] text-white rounded-tr-sm"
-                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-tl-sm border border-zinc-200 dark:border-zinc-700"
+                      ? "bg-[#B21563] text-white rounded-tr-sm shadow-sm"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-tl-sm border border-zinc-200 dark:border-zinc-700 shadow-sm"
                   }`}>
                     <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.message}</p>
                   </div>
                   {msg.sender === "user" && (
-                    <Avatar className="w-8 h-8 rounded shrink-0 bg-zinc-200 dark:bg-zinc-700">
+                    <Avatar className="w-8 h-8 md:w-10 md:h-10 rounded shrink-0 bg-zinc-200 dark:bg-zinc-700">
                       <AvatarFallback>U</AvatarFallback>
                     </Avatar>
                   )}
@@ -729,7 +799,7 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
                   <Avatar className="w-8 h-8 rounded shrink-0 bg-[#B21563]">
                     <Bot className="w-5 h-5 m-auto text-white" />
                   </Avatar>
-                  <div className="px-4 py-3 bg-zinc-100 dark:bg-zinc-800 rounded-2xl rounded-tl-sm border border-zinc-200 dark:border-zinc-700 flex items-center gap-1">
+                  <div className="px-4 py-3 bg-zinc-100 dark:bg-zinc-800 rounded-2xl rounded-tl-sm border border-zinc-200 dark:border-zinc-700 flex items-center gap-1 shadow-sm">
                     <span className="w-2 h-2 bg-zinc-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
                     <span className="w-2 h-2 bg-zinc-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
                     <span className="w-2 h-2 bg-zinc-400 rounded-full animate-bounce" />
@@ -738,43 +808,19 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
               )}
               <div ref={messagesEndRef} />
             </div>
+          )}
+        </div>
 
-            <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#121212]">
-              <div className="max-w-4xl mx-auto relative flex items-center w-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900/50 rounded-xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-[#B21563]/50 transition-all">
-                <input
-                  type="text"
-                  value={inputValue}
-                  onChange={e => setInputValue(e.target.value)}
-                  onKeyDown={e => e.key === "Enter" && handleSend(inputValue)}
-                  placeholder="Type your message here..."
-                  className="flex-1 bg-transparent border-none outline-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500"
-                />
-                <div className="flex items-center gap-2 ml-2">
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={toggleVoiceTyping}
-                    className={`h-8 w-8 rounded-md transition-all ${isListening ? "text-red-500 bg-red-50 dark:bg-red-900/20 animate-pulse" : "text-black dark:text-zinc-100 bg-transparent hover:text-[#B21563] dark:hover:text-[#B21563] hover:bg-zinc-100 dark:hover:bg-zinc-800"}`}
-                    title={isListening ? "Stop Voice Typing" : "Voice Typing"}
-                  >
-                    {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-                  </Button>
-                  <Button
-                    size="icon"
-                    className={`h-8 w-8 rounded-md transition-colors ${
-                      inputValue.trim()
-                        ? "bg-[#B21563] text-white hover:bg-[#911050]"
-                        : "bg-black text-white dark:bg-white dark:text-black pointer-events-none opacity-50"
-                    }`}
-                    onClick={() => handleSend(inputValue)}
-                  >
-                    <ArrowUp className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
+        {/* Sticky Input Area */}
+        <div className="p-4 md:p-6 bg-white dark:bg-[#121212] border-t border-zinc-200 dark:border-zinc-800 w-full max-w-4xl mx-auto">
+          <MessageInput 
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            onSend={() => handleSend(inputValue)}
+            isListening={isListening}
+            toggleVoiceTyping={toggleVoiceTyping}
+          />
+        </div>
       </div>
     </div>
   );

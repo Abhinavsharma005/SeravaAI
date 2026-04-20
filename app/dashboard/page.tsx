@@ -160,7 +160,7 @@ export default function DashboardPage() {
             <Tabs 
                 value={activeTab} 
                 onValueChange={setActiveTab}
-                className={`transition-all duration-300 flex flex-col min-h-screen ${showKeyModal ? "blur-md pointer-events-none" : ""}`}
+                className={`transition-all duration-300 flex flex-col h-screen h-[100dvh] overflow-hidden ${showKeyModal ? "blur-md pointer-events-none" : ""}`}
             >
                 {/* Header */}
                 <header className="bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 px-6 py-4 flex items-center justify-between">
@@ -229,14 +229,14 @@ export default function DashboardPage() {
                 </header>
 
                 {/* Main Content Area */}
-                <main className="flex-1 w-full p-4 mx-auto">
+                <main className={`flex-1 w-full flex flex-col min-h-0 ${activeTab === "chatbot" ? "p-0 md:p-4" : "p-2 md:p-4"} mx-auto`}>
                     <TabsContent value="evidence" className="mt-0 h-full focus-visible:outline-none focus-visible:ring-0">
                         <EvidenceSection />
                     </TabsContent>
                     <TabsContent value="stress" className="mt-0 h-full focus-visible:outline-none focus-visible:ring-0">
                         <StressMeter uid={userRecord.uid} />
                     </TabsContent>
-                    <TabsContent value="chatbot" className="mt-0 h-full focus-visible:outline-none focus-visible:ring-0">
+                    <TabsContent value="chatbot" className="mt-0 h-full flex flex-col focus-visible:outline-none focus-visible:ring-0">
                         <ChatbotSection userRecord={userRecord} uid={userRecord.uid} />
                     </TabsContent>
                     <TabsContent value="emergency" className="mt-0 h-full focus-visible:outline-none focus-visible:ring-0">
