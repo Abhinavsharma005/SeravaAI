@@ -132,7 +132,7 @@ else {
   let latestSummary: string = "No recent activity";
 
   if (user.summaryMap && user.summaryMap.size > 0) {
-    const entries = Array.from(user.summaryMap.entries());
+    const entries = Array.from(user.summaryMap.entries()) as [string, any][];
     entries.sort((a, b) => b[0].localeCompare(a[0]));
     latestSummary = entries[0][1];
   }
