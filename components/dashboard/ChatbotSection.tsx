@@ -289,10 +289,19 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
     fetchMessages();
   }, [uid, activeChatId]); // ← chatSessions intentionally NOT here
 
-  // ── Show mood modal once per session ─────────────────────────────────────
+  // ── Show mood modal once every 6 hours ─────────────────────────────────────
   useEffect(() => {
-    if (!moodModalDismissed && uid) {
-      setShowMoodModal(true);
+    if (!uid) return;
+    
+    const key = `lastMoodPrompt_${uid}`;
+    const lastPrompt = localStorage.getItem(key);
+    const sixHours = 6 * 60 * 60 * 1000;
+    const now = Date.now();
+
+    if (!lastPrompt || (now - parseInt(lastPrompt)) > sixHours) {
+      if (!moodModalDismissed) {
+        setShowMoodModal(true);
+      }
     }
   }, [uid, moodModalDismissed]);
 
@@ -312,6 +321,10 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
   const handleMoodSelect = (emoji: string) => {
     setSelectedMoodAnimation(emoji);
     recordMood(emoji, "manual");
+    
+    // Set 6-hour timer
+    localStorage.setItem(`lastMoodPrompt_${uid}`, Date.now().toString());
+    
     setTimeout(() => {
       setShowMoodModal(false);
       setMoodModalDismissed(true);
@@ -578,7 +591,11 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="relative bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 p-8 max-w-md w-full mx-4 animate-in zoom-in-95 duration-300">
             <button
-              onClick={() => { setShowMoodModal(false); setMoodModalDismissed(true); }}
+              onClick={() => { 
+                setShowMoodModal(false); 
+                setMoodModalDismissed(true);
+                localStorage.setItem(`lastMoodPrompt_${uid}`, Date.now().toString());
+              }}
               className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
             >
               <X className="w-5 h-5" />
