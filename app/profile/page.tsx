@@ -194,28 +194,40 @@ const removeContact = (index: number) => {
         }
     };
 
-    const onSubmit = async (data: FormData) => {
-        if (!uid) return;
+    // In profile/page.tsx, replace the onSubmit function:
 
-        try {
-            const res = await fetch("/api/auth/profile", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ ...data, uid, profilePicUrl: profilePic,  trustedContacts: contacts,     
-  emergencyMessage: emergencyMessage }),
-            });
+const onSubmit = async (data: FormData) => {
+  if (!uid) return;
 
-          const result = await res.json();
-console.log("PROFILE RESPONSE:", result);
+  try {
+    const res = await fetch("/api/auth/profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...data,
+        uid,
+        profilePicUrl: profilePic,
+        trustedContacts: contacts,
+        emergencyMessage: emergencyMessage,
+      }),
+    });
 
-if (!res.ok) throw new Error(result.error || "Failed to save profile");
+    const result = await res.json();
+    console.log("PROFILE RESPONSE:", result);
 
-            router.push("/dashboard");
-        } catch (error: unknown) {
-            console.error(error);
-            alert("Error saving profile: " + (error as Error).message);
-        }
-    };
+    if (!res.ok) throw new Error(result.error || "Failed to save profile");
+
+    // ── NEW: Redirect based on secretKey ──
+    if (data.secretKey && data.secretKey.trim() !== "") {
+      router.push("/notepad");
+    } else {
+      router.push("/dashboard");
+    }
+  } catch (error: unknown) {
+    console.error(error);
+    alert("Error saving profile: " + (error as Error).message);
+  }
+};
 
     if (loadingAuth) return <div className="h-screen flex items-center justify-center">Loading...</div>;
 

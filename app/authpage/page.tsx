@@ -29,24 +29,51 @@ function AuthContent() {
       }
       
       if (email) {
-        signInWithEmailLink(auth, email, window.location.href)
-          .then(async (result) => {
-            window.localStorage.removeItem("emailForSignIn");
-            
-            // Sync with backend before redirecting
-            await fetch("/api/auth/sync", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ uid: result.user.uid, email: result.user.email }),
-            });
-            
-            router.push("/dashboard");
-          })
-          .catch((error) => {
-            console.error("Error signing in with email link", error);
-            alert("Error signing in. The link might be expired.");
-            setCheckingLink(false);
-          });
+        // In authpage/page.tsx, replace the signInWithEmailLink success handler:
+
+signInWithEmailLink(auth, email, window.location.href)
+  .then(async (result) => {
+    window.localStorage.removeItem("emailForSignIn");
+
+    // Sync with backend
+    await fetch("/api/auth/sync", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        uid: result.user.uid,
+        email: result.user.email,
+      }),
+    });
+
+    // ── NEW: Check if user has secretKey ──
+    const meRes = await fetch("/api/auth/me", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ uid: result.user.uid }),
+    });
+
+    if (meRes.ok) {
+      const meData = await meRes.json();
+
+      if (!meData.user.isProfileComplete) {
+        router.push("/profile");
+        return;
+      }
+
+      if (meData.user.secretKey) {
+        router.push("/notepad");
+      } else {
+        router.push("/dashboard");
+      }
+    } else {
+      router.push("/dashboard");
+    }
+  })
+  .catch((error) => {
+    console.error("Error signing in with email link", error);
+    alert("Error signing in. The link might be expired.");
+    setCheckingLink(false);
+  });
       } else {
         setCheckingLink(false);
       }
