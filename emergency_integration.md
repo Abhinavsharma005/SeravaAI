@@ -30,11 +30,20 @@ const latestSummary = summaryMap.get(latestDate);
 ```
 
 ## Background Summary Generation (12:00 AM)
-We use a native **TypeScript Background Worker** to ensure summaries are ready every morning:
+We use **Vercel Cron** to ensure summaries are ready every morning:
 
-- **Technology**: Built using `node-cron` and integrated via Next.js `instrumentation.ts`.
-- **Logic**: At 12:00 AM UTC daily, the server automatically iterates through all users who had chat activity the previous day and generates a final daily record.
-- **Token Efficiency**: This is the primary time summaries are generated, ensuring AI tokens are not wasted during active chat sessions.
+- **Schedule**: Every day at 00:00 AM UTC.
+- **Endpoint**: `/api/cron/daily-summary` (defined in `vercel.json`).
+- **Security**: The endpoint is protected by a `CRON_SECRET`.
+
+### Action Required: Set up CRON_SECRET
+To enable this, you **must** add the following environment variable in the Vercel Dashboard (**Settings > Environment Variables**):
+
+- **Key**: `CRON_SECRET`
+- **Value**: `aegis_ai_v1_cron_889922_xyz` (or any random secure string of your choice).
+
+### How it works
+Vercel automatically hits the `/api/cron/daily-summary` URL at midnight. The code checks the `Authorization` header against your `CRON_SECRET`. If they match, it triggers the summary generation for all active users.
 
 ## Emergency Button "Live Sync"
 To ensure the emergency SMS is always up to date with the very latest information, the system performs a **Live Sync**:
