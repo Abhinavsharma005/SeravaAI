@@ -70,7 +70,7 @@ interface MessageInputProps {
 
 function MessageInput({ inputValue, setInputValue, onSend, isListening, toggleVoiceTyping }: MessageInputProps) {
   const triggerEmergency = () => {
-    window.dispatchEvent(new CustomEvent("aegis-trigger-emergency"));
+    window.dispatchEvent(new CustomEvent("serava-trigger-emergency"));
   };
 
   return (

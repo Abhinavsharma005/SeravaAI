@@ -13,8 +13,8 @@ export default function EmergencyButton({ activeTab }: { activeTab?: string }) {
 
   useEffect(() => {
     const handleTrigger = () => setOpen(true);
-    window.addEventListener("aegis-trigger-emergency", handleTrigger);
-    return () => window.removeEventListener("aegis-trigger-emergency", handleTrigger);
+    window.addEventListener("serava-trigger-emergency", handleTrigger);
+    return () => window.removeEventListener("serava-trigger-emergency", handleTrigger);
   }, []);
 
   // 🔁 Sequential fallback

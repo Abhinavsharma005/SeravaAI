@@ -45,7 +45,7 @@ export default function DashboardPage() {
   // ── Clear flag ONLY on tab close/refresh, NOT on navigation ──
   useEffect(() => {
     const handleUnload = () => {
-      sessionStorage.removeItem("aegis_unlocked");
+      sessionStorage.removeItem("serava_unlocked");
     };
     window.addEventListener("beforeunload", handleUnload);
     return () => {
@@ -88,7 +88,7 @@ export default function DashboardPage() {
         }
 
         if (data.user.secretKey) {
-          const stealthUnlocked = sessionStorage.getItem("aegis_unlocked");
+          const stealthUnlocked = sessionStorage.getItem("serava_unlocked");
           if (stealthUnlocked !== "true") {
             router.push("/notepad");
             return;
@@ -111,7 +111,7 @@ export default function DashboardPage() {
   }, [router]);
 
   const handleLogout = async () => {
-    sessionStorage.removeItem("aegis_unlocked");
+    sessionStorage.removeItem("serava_unlocked");
     const auth = getAuth(app);
     await signOut(auth);
     router.push("/authpage");
@@ -154,7 +154,7 @@ export default function DashboardPage() {
             </div>
             <div className="hidden md:block">
               <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-                AegisAI Dashboard
+                SeravaAI Dashboard
               </h1>
               <p className="text-sm text-zinc-500 dark:text-zinc-400">
                 Welcome back, {userRecord.name}

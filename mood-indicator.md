@@ -1,4 +1,4 @@
-# AegisAI Mood Indicator System
+# SeravaAI Mood Indicator System
 
 ## Overview
 

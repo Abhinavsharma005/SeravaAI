@@ -142,7 +142,7 @@ else {
   }
 
   finalMessage = `
-🚨 AEGIS ALERT
+🚨 SERAVA ALERT
 
 ${user.name} may need attention.
 

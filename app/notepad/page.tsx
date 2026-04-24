@@ -142,7 +142,7 @@ export default function NotepadPage() {
       }
 
       // ── Set stealth unlock flag ──  ← ⚠️ ADD THIS LINE
-      sessionStorage.setItem("aegis_unlocked", "true");
+      sessionStorage.setItem("serava_unlocked", "true");
 
       // Navigate to dashboard
       router.push("/dashboard");

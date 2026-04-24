@@ -242,7 +242,7 @@ const onSubmit = async (data: FormData) => {
                         <CardDescription className="text-zinc-500 mt-2">
                             {isEditing 
                                 ? "Update your details below." 
-                                : "Please provide your details to set up your account on AegisAI."}
+                                : "Please provide your details to set up your account on SeravaAI."}
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="pt-8">

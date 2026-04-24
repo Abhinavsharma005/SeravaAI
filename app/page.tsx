@@ -271,7 +271,7 @@ export default function Home() {
             </span>
           </h1>
           <p className="mt-6 text-lg md:text-xl text-zinc-600 max-w-2xl mx-auto leading-relaxed">
-            AegisAI combines an empathetic AI therapist, real-time emergency alerts, and smart safety monitoring — all in one discreet, always-on platform.
+            SeravaAI combines an empathetic AI therapist, real-time emergency alerts, and smart safety monitoring — all in one discreet, always-on platform.
           </p>
         </div>
 
@@ -334,7 +334,7 @@ export default function Home() {
       {/* ═══════════════════ FEATURES ═══════════════════ */}
       <section className="py-28 px-6 max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <p className="text-[#B21563] text-sm uppercase tracking-widest mb-3">what aegisai does</p>
+          <p className="text-[#B21563] text-sm uppercase tracking-widest mb-3">what seravaai does</p>
           <h2 className="text-4xl md:text-5xl font-extrabold">
             Everything you need,{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B21563] to-[#7a0e43]">
@@ -364,7 +364,7 @@ export default function Home() {
           <FeatureCard
             icon="🚨"
             title="Emergency Alert System"
-            desc="Add trusted contacts. When danger is detected, AegisAI instantly notifies them with a discreet, private message — no action needed from you."
+            desc="Add trusted contacts. When danger is detected, SeravaAI instantly notifies them with a discreet, private message — no action needed from you."
             delay="160ms"
             accent="bg-gradient-to-br from-red-500/5 to-transparent"
           />
@@ -378,7 +378,7 @@ export default function Home() {
           <FeatureCard
             icon="🧭"
             title="AI Guidance System"
-            desc="Not just words — actionable next steps. From breathing exercises to safe-exit plans, AegisAI walks you through what to do next."
+            desc="Not just words — actionable next steps. From breathing exercises to safe-exit plans, SeravaAI walks you through what to do next."
             delay="320ms"
             accent="bg-gradient-to-br from-emerald-500/5 to-transparent"
           />
@@ -428,7 +428,7 @@ export default function Home() {
                   Millions of people live under constant surveillance, unable to reach out for help due to monitored communication channels. Traditional support systems are too visible, too slow, too risky.
                 </p>
                 <p className="mt-3 text-zinc-600 leading-relaxed text-base">
-                  <span className="text-zinc-900 font-semibold">AegisAI</span> steps in — providing a covert, AI-driven lifeline that works even under intense scrutiny, for both men and women.
+                  <span className="text-zinc-900 font-semibold">SeravaAI</span> steps in — providing a covert, AI-driven lifeline that works even under intense scrutiny, for both men and women.
                 </p>
               </div>
             );
@@ -436,7 +436,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════════════════ SPLIT — WHY AEGISAI ═══════════════════ */}
+      {/* ═══════════════════ SPLIT — WHY SERAVAAI ═══════════════════ */}
       <section className="py-28 px-6">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
@@ -449,9 +449,9 @@ export default function Home() {
                 className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
               >
                 <span className="text-xs uppercase tracking-widest text-[#B21563] border border-[#B21563]/30 rounded-full px-3 py-1">Reasons</span>
-                <h2 className="mt-4 text-3xl md:text-4xl font-extrabold">Why Choose AegisAI</h2>
+                <h2 className="text-3xl md:text-4xl font-extrabold mt-4">Why Choose SeravaAI</h2>
                 <div className="mt-8 flex flex-col gap-6">
-                  <WhyRow icon="🛡️" title="Discreet and Secure" desc="Built with steganography and privacy at its core — AegisAI allows anyone to ask for help safely, without raising suspicion." delay="0ms" />
+                  <WhyRow icon="🛡️" title="Discreet and Secure" desc="Built with steganography and privacy at its core — SeravaAI allows anyone to ask for help safely, without raising suspicion." delay="0ms" />
                   <WhyRow icon="💬" title="24/7 AI Emotional Support" desc="Compassionate, always-available mental health conversations. No appointments, no judgment, no waiting." delay="100ms" />
                   <WhyRow icon="⚖️" title="Legal Empowerment" desc="Instant, plain-language legal guidance on rights, custody, property, and protective orders." delay="200ms" />
                   <WhyRow icon="📡" title="Smart Crisis Detection" desc="AI continuously reads emotional cues and escalates automatically — so help comes even when you can't ask." delay="300ms" />
@@ -555,7 +555,7 @@ export default function Home() {
             </span>
           </h2>
           <p className="mt-6 text-zinc-600 text-lg leading-relaxed max-w-xl mx-auto">
-            Whether you are a survivor, an ally, or an advocate — AegisAI is here. Together, we can make a difference.
+            Whether you are a survivor, an ally, or an advocate — SeravaAI is here. Together, we can make a difference.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Button
@@ -580,7 +580,7 @@ export default function Home() {
       {/* ═══════════════════ FOOTER ═══════════════════ */}
       <footer className="border-t border-zinc-200 py-10 px-6 text-center">
         <p className="text-zinc-600 text-sm">
-          © {new Date().getFullYear()} AegisAI — Your safety, always.
+          © {new Date().getFullYear()} SeravaAI — Your safety, always.
         </p>
       </footer>
 

@@ -1,6 +1,6 @@
-# AegisAI Database Schema Documentation
+# SeravaAI Database Schema Documentation
 
-AegisAI utilizes MongoDB for persisting user profiles, chat history, AI analysis results, and mood tracking. Below is the structure of our core data models.
+SeravaAI utilizes MongoDB for persisting user profiles, chat history, AI analysis results, and mood tracking. Below is the structure of our core data models.
 
 ## Entities and Relationships
 
