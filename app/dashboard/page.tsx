@@ -8,7 +8,7 @@ import { app } from "@/lib/firebase";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTheme } from "next-themes";
-import { Moon, Sun, LogOut } from "lucide-react";
+import { Moon, Sun, LogOut, Star, Activity, MessageSquare, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import EvidenceSection from "@/components/dashboard/EvidenceSection";
 import ChatbotSection from "@/components/dashboard/ChatbotSection";
@@ -164,29 +164,33 @@ export default function DashboardPage() {
 
           <div className="flex justify-center flex-1">
             {/* Desktop Tabs */}
-            <TabsList className="hidden md:grid grid-cols-4 w-full max-w-md h-10 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-full p-1 shadow-sm">
+            <TabsList className="hidden md:flex flex-row w-fit h-fit bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl p-1 gap-6 shadow-sm shadow-zinc-200/50 dark:shadow-none">
               <TabsTrigger
                 value="evidence"
-                className="rounded-full data-active:!bg-[#B21563] data-active:!text-white hover:text-[#B21563] transition-all text-sm font-medium"
+                className="rounded-lg data-active:!bg-[#B21563] data-active:!text-white text-slate-500 dark:text-zinc-400 hover:text-[#B21563] transition-all text-sm font-medium flex items-center gap-2 px-8 py-3"
               >
+                <Star className="w-4 h-4" />
                 Evidence
               </TabsTrigger>
               <TabsTrigger
                 value="stress"
-                className="rounded-full data-active:!bg-[#B21563] data-active:!text-white hover:text-[#B21563] transition-all text-sm font-medium"
+                className="rounded-lg data-active:!bg-[#B21563] data-active:!text-white text-slate-500 dark:text-zinc-400 hover:text-[#B21563] transition-all text-sm font-medium flex items-center gap-2 px-8 py-3"
               >
+                <Activity className="w-4 h-4" />
                 Stress
               </TabsTrigger>
               <TabsTrigger
                 value="chatbot"
-                className="rounded-full data-active:!bg-[#B21563] data-active:!text-white hover:text-[#B21563] transition-all text-sm font-medium"
+                className="rounded-lg data-active:!bg-[#B21563] data-active:!text-white text-slate-500 dark:text-zinc-400 hover:text-[#B21563] transition-all text-sm font-medium flex items-center gap-2 px-8 py-3"
               >
+                <MessageSquare className="w-4 h-4" />
                 Chatbot
               </TabsTrigger>
               <TabsTrigger
                 value="emergency"
-                className="rounded-full data-active:!bg-[#B21563] data-active:!text-white hover:text-[#B21563] transition-all text-sm font-medium"
+                className="rounded-lg data-active:!bg-[#B21563] data-active:!text-white text-slate-500 dark:text-zinc-400 hover:text-[#B21563] transition-all text-sm font-medium flex items-center gap-2 px-8 py-3"
               >
+                <Shield className="w-4 h-4" />
                 Emergency
               </TabsTrigger>
             </TabsList>
