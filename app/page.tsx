@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/lib/firebase";
+import Image from "next/image";
 
 /* ─────────────────────────────────────────────
    Hook: intersection observer for scroll-reveal
@@ -38,23 +39,6 @@ function useReveal(threshold = 0.1, delay = 0) {
   return { ref, visible };
 }
 
-/* ─────────────────────────────────────────────
-   Floating particle
-───────────────────────────────────────────── */
-function Particle({ style }: { style: React.CSSProperties }) {
-  return (
-    <span
-      className="absolute rounded-full pointer-events-none"
-      style={{
-        width: 6,
-        height: 6,
-        background: "radial-gradient(circle, #6366f1 0%, transparent 80%)",
-        opacity: 0.5,
-        ...style,
-      }}
-    />
-  );
-}
 
 /* ─────────────────────────────────────────────
    Stat card
@@ -130,7 +114,7 @@ function WhyRow({ icon, title, desc, delay }: { icon: string; title: string; des
 /* ─────────────────────────────────────────────
    Image placeholder with 3D shadow
 ───────────────────────────────────────────── */
-function ImagePlaceholder({ label, className = "" }: { label?: string; className?: string }) {
+function ImagePlaceholder({ label, src, className = "" }: { label?: string; src?: string; className?: string }) {
   return (
     <div
       className={`relative rounded-2xl overflow-hidden bg-zinc-800/60 border border-zinc-300
@@ -138,7 +122,18 @@ function ImagePlaceholder({ label, className = "" }: { label?: string; className
         ${className}`}
       style={{ perspective: "800px" }}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-[#B21563]/10 to-transparent pointer-events-none" />
+      {src ? (
+        <Image 
+          src={src} 
+          alt={label || "Visual"} 
+          fill 
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+      ) : (
+        <div className="absolute inset-0 bg-gradient-to-br from-[#B21563]/10 to-transparent pointer-events-none" />
+      )}
+      
       {/* subtle grid lines */}
       <div
         className="absolute inset-0 opacity-[0.04]"
@@ -148,7 +143,7 @@ function ImagePlaceholder({ label, className = "" }: { label?: string; className
           backgroundSize: "40px 40px",
         }}
       />
-      {label && (
+      {label && !src && (
         <span className="absolute bottom-3 left-1/2 -translate-x-1/2 text-xs text-zinc-500 font-mono tracking-wider uppercase">
           {label}
         </span>
@@ -167,7 +162,7 @@ function ProblemVisual() {
       ref={ref}
       className={`transition-all duration-700 ${visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"}`}
     >
-      <ImagePlaceholder label="Awareness Visual" className="w-full h-80" />
+      <ImagePlaceholder src="/second_pic.png" label="Awareness Visual" className="w-full h-80" />
     </div>
   );
 }
@@ -222,7 +217,7 @@ function SupportVisual() {
       ref={ref}
       className={`transition-all duration-700 delay-200 ${visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"}`}
     >
-      <ImagePlaceholder label="Support Visual" className="w-full h-80" />
+      <ImagePlaceholder src="/third_pic.png" label="Support Visual" className="w-full h-80" />
     </div>
   );
 }
@@ -295,18 +290,6 @@ function HeroSection({ mouse }: { mouse: { x: number; y: number } }) {
       <div className="absolute top-[10%] right-[-15%] w-[45vw] h-[45vw] rounded-full bg-[#911050]/10 mix-blend-screen filter blur-[80px] animate-blob delay-2" />
       <div className="absolute bottom-[-10%] left-[20%] w-[40vw] h-[40vw] rounded-full bg-[#D81B60]/10 mix-blend-screen filter blur-[80px] animate-blob delay-4" />
 
-      {/* Particles */}
-      {[...Array(12)].map((_, i) => (
-        <Particle
-          key={i}
-          style={{
-            top: `${10 + (i * 7) % 80}%`,
-            left: `${5 + (i * 11) % 90}%`,
-            animationDelay: `${i * 0.4}s`,
-            animationDuration: `${3 + (i % 3)}s`,
-          }}
-        />
-      ))}
 
       {/* Grid overlay */}
       <div
@@ -377,19 +360,11 @@ function HeroSection({ mouse }: { mouse: { x: number; y: number } }) {
         className={`mt-20 relative w-full max-w-3xl mx-auto transition-all duration-1000 delay-300 ${heroReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
       >
         <div className="animate-float">
-          <ImagePlaceholder label="Dashboard Preview" className="w-full h-72 md:h-96" />
+          <ImagePlaceholder src="/new_first_pic.png" label="Dashboard Preview" className="w-full h-72 md:h-96" />
         </div>
         <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-3/4 h-20 bg-[#B21563]/20 rounded-full blur-2xl pointer-events-none" />
       </div>
 
-      {/* Scroll cue */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-zinc-600 text-xs">
-        <span>scroll</span>
-        <svg width="16" height="24" viewBox="0 0 16 24" fill="none" className="animate-bounce">
-          <rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" strokeWidth="1.5"/>
-          <circle cx="8" cy="7" r="2" fill="currentColor"/>
-        </svg>
-      </div>
     </section>
   );
 }

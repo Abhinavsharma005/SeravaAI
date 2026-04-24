@@ -393,12 +393,12 @@ export default function ChatbotSection({ userRecord, uid }: ChatbotSectionProps)
   }, []);
 
   const presetQuestions = [
-    { text: "Are you safe right now?", icon: <Shield className="w-4 h-4 text-emerald-500" /> },
-    { text: "How has your day been today?", icon: <Clock className="w-4 h-4 text-blue-500" /> },
-    { text: "What happened recently to make you feel this way?", icon: <Zap className="w-4 h-4 text-amber-500" /> },
-    { text: "Is this a recurring issue or the first time?", icon: <CheckCircle className="w-4 h-4 text-purple-500" /> },
-    { text: "Is there someone nearby you trust to talk to?", icon: <Users className="w-4 h-4 text-cyan-500" /> },
-    { text: "Would you like to discuss your next steps or options?", icon: <Heart className="w-4 h-4 text-rose-500" /> },
+    { text: "I don't feel safe right now. What should I do?", icon: <Shield className="w-4 h-4 text-emerald-500" /> },
+    { text: "How can I deal with recurring stress?", icon: <Clock className="w-4 h-4 text-blue-500" /> },
+    { text: "What should I do if I’m in danger?", icon: <Zap className="w-4 h-4 text-amber-500" /> },
+    { text: "Can you help me create a discreet safety plan?", icon: <CheckCircle className="w-4 h-4 text-purple-500" /> },
+    { text: "I need someone to talk to about my emotional well-being.", icon: <Heart className="w-4 h-4 text-rose-500" /> },
+    {text: "Can you give me a list of emergency hotlines?", icon: <Users className="w-4 h-4 text-cyan-500" /> },
   ];
 
   // ── Save a single message to DB ───────────────────────────────────────────
