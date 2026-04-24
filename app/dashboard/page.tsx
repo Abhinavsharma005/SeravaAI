@@ -114,7 +114,7 @@ export default function DashboardPage() {
     sessionStorage.removeItem("serava_unlocked");
     const auth = getAuth(app);
     await signOut(auth);
-    router.push("/authpage");
+    router.push("/");
   };
 
   // ── Loading State ──

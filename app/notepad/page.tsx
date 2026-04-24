@@ -302,7 +302,7 @@ export default function NotepadPage() {
     }
     const auth = getAuth(app);
     await signOut(auth);
-    router.push("/authpage");
+    router.push("/");
   };
 
   // ── Filter Notes ──────────────────────────────────────────────
