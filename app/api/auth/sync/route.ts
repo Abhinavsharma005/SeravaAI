@@ -4,7 +4,7 @@ import User from "@/models/User";
 
 export async function POST(req: Request) {
   try {
-    const { uid, email } = await req.json();
+    const { uid, email, displayName, photoURL } = await req.json();
 
     if (!uid || !email) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -16,7 +16,13 @@ export async function POST(req: Request) {
     const user = await User.findOneAndUpdate(
       { uid },
       { 
-        $setOnInsert: { email, uid, isProfileComplete: false } 
+        $setOnInsert: { 
+          email, 
+          uid, 
+          isProfileComplete: false,
+          name: displayName || "",
+          profilePicture: photoURL || ""
+        } 
       },
       { upsert: true, returnDocument: 'after' }
     );

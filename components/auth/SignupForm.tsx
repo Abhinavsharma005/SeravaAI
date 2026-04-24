@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { app } from "@/lib/firebase";
+import SocialAuth from "./SocialAuth";
 
 import {
     Card,
@@ -153,6 +154,8 @@ export default function SignupForm() {
                         {isSubmitting ? "Creating account..." : "Continue"}
                     </Button>
                 </form>
+
+                <SocialAuth />
             </CardContent>
 
             <CardFooter className="justify-center text-sm text-zinc-500 dark:text-zinc-400 pt-4 border-t border-zinc-100 dark:border-zinc-800/50">

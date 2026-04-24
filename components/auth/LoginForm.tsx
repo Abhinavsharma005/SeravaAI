@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { app } from "@/lib/firebase";
+import SocialAuth from "./SocialAuth";
 
 import {
     Card,
@@ -151,6 +152,8 @@ const onSubmit = async (data: FormData) => {
                         {isSubmitting ? "Signing in..." : "Login"}
                     </Button>
                 </form>
+
+                <SocialAuth />
             </CardContent>
 
             <CardFooter className="justify-center text-sm text-zinc-500 dark:text-zinc-400 pt-4 border-t border-zinc-100 dark:border-zinc-800/50">
