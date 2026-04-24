@@ -114,7 +114,7 @@ function WhyRow({ icon, title, desc, delay }: { icon: string; title: string; des
 /* ─────────────────────────────────────────────
    Image placeholder with 3D shadow
 ───────────────────────────────────────────── */
-function ImagePlaceholder({ label, src, className = "" }: { label?: string; src?: string; className?: string }) {
+function ImagePlaceholder({ label, src, className = "", priority = false, quality = 75 }: { label?: string; src?: string; className?: string; priority?: boolean; quality?: number }) {
   return (
     <div
       className={`relative rounded-2xl overflow-hidden bg-zinc-800/60 border border-zinc-300
@@ -127,6 +127,8 @@ function ImagePlaceholder({ label, src, className = "" }: { label?: string; src?
           src={src} 
           alt={label || "Visual"} 
           fill 
+          priority={priority}
+          quality={quality}
           className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
