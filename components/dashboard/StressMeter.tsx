@@ -8,17 +8,19 @@ import {
   Minus,
   RefreshCw,
   Info,
+  Shield,
+  Star,
 } from "lucide-react";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const MOOD_CONFIG = [
-  { emoji: "😄", label: "Great",     weight: 0, color: "#10b981", bg: "bg-emerald-500" },
-  { emoji: "🙂", label: "Good",      weight: 1, color: "#6ee7b7", bg: "bg-emerald-300" },
-  { emoji: "😐", label: "Okay",      weight: 2, color: "#fbbf24", bg: "bg-amber-400"   },
-  { emoji: "😕", label: "Not great", weight: 3, color: "#f97316", bg: "bg-orange-500"  },
-  { emoji: "😢", label: "Sad",       weight: 4, color: "#ef4444", bg: "bg-red-500"     },
-  { emoji: "😭", label: "Terrible",  weight: 5, color: "#991b1b", bg: "bg-red-900"     },
+  { emoji: "😄", label: "Great", weight: 0, color: "#10b981", bg: "bg-emerald-500" },
+  { emoji: "🙂", label: "Good", weight: 1, color: "#6ee7b7", bg: "bg-emerald-300" },
+  { emoji: "😐", label: "Okay", weight: 2, color: "#fbbf24", bg: "bg-amber-400" },
+  { emoji: "😕", label: "Not great", weight: 3, color: "#f97316", bg: "bg-orange-500" },
+  { emoji: "😢", label: "Sad", weight: 4, color: "#ef4444", bg: "bg-red-500" },
+  { emoji: "😭", label: "Terrible", weight: 5, color: "#991b1b", bg: "bg-red-900" },
 ];
 
 const MAX_WEIGHT = 5;
@@ -153,10 +155,10 @@ function StressGauge({ index, emoji, label }: { index: number; emoji: string; la
   // Color interpolation based on index
   const gaugeColor =
     index <= 20 ? "#10b981" :
-    index <= 40 ? "#6ee7b7" :
-    index <= 60 ? "#fbbf24" :
-    index <= 80 ? "#f97316" :
-                  "#ef4444";
+      index <= 40 ? "#6ee7b7" :
+        index <= 60 ? "#fbbf24" :
+          index <= 80 ? "#f97316" :
+            "#ef4444";
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -291,6 +293,115 @@ function DayBar({
         {day.label.split(" ")[1]} {/* just the day number */}
       </span>
     </button>
+  );
+}
+
+/** Small line chart for trend visualization */
+function TrendMiniChart({ data, color }: { data: number[]; color: string }) {
+  if (data.length < 2) return null;
+  const width = 120;
+  const height = 40;
+  const max = Math.max(...data, 100);
+  const min = Math.min(...data, 0);
+  const range = max - min || 1;
+
+  const points = data
+    .map((val, i) => {
+      const x = (i / (data.length - 1)) * width;
+      const y = height - ((val - min) / range) * height;
+      return `${x},${y}`;
+    })
+    .join(" ");
+
+  return (
+    <div className="relative h-10 w-24 md:w-32 opacity-80">
+      <svg
+        viewBox={`0 0 ${width} ${height}`}
+        className="w-full h-full overflow-visible"
+        preserveAspectRatio="none"
+      >
+        <defs>
+          <linearGradient id="trendGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={color} stopOpacity="0.2" />
+            <stop offset="100%" stopColor={color} stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path
+          d={`M 0 ${height} L ${points} L ${width} ${height} Z`}
+          fill="url(#trendGradient)"
+        />
+        <polyline
+          fill="none"
+          stroke={color}
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          points={points}
+        />
+        {/* End dot */}
+        <circle
+          cx={width}
+          cy={height - ((data[data.length - 1] - min) / range) * height}
+          r="3"
+          fill={color}
+        />
+      </svg>
+    </div>
+  );
+}
+
+/** Small circular mood score */
+function MoodScoreGauge({ score }: { score: number | null }) {
+  const isPlaceholder = score === null || score === 0;
+  const radius = 32;
+  const stroke = 5;
+  const normalizedRadius = radius - stroke / 2;
+  const circumference = normalizedRadius * 2 * Math.PI;
+  const displayScore = score ?? 0;
+  const offset = circumference - (Math.min(displayScore, 10) / 10) * circumference;
+
+  const color = isPlaceholder ? "#e4e4e7" :
+    displayScore >= 8 ? "#10b981" :
+      displayScore >= 6 ? "#fbbf24" :
+        displayScore >= 4 ? "#f97316" :
+          "#ef4444";
+
+  return (
+    <div className="relative flex flex-col items-center shrink-0">
+      <div className="relative" style={{ width: radius * 2, height: radius * 2 }}>
+        <svg width={radius * 2} height={radius * 2} className="rotate-[-90deg]">
+          <circle
+            stroke="currentColor"
+            className="text-zinc-100 dark:text-zinc-800"
+            fill="transparent"
+            strokeWidth={stroke}
+            r={normalizedRadius}
+            cx={radius}
+            cy={radius}
+          />
+          {!isPlaceholder && (
+            <circle
+              stroke={color}
+              fill="transparent"
+              strokeDasharray={circumference + " " + circumference}
+              style={{ strokeDashoffset: offset, transition: "stroke-dashoffset 0.8s ease" }}
+              strokeWidth={stroke}
+              strokeLinecap="round"
+              r={normalizedRadius}
+              cx={radius}
+              cy={radius}
+            />
+          )}
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-sm font-black text-zinc-800 dark:text-zinc-200" style={{ color: isPlaceholder ? "#a1a1aa" : color }}>
+            {isPlaceholder ? "--" : displayScore.toFixed(1)}
+            <span className="text-[9px] text-zinc-400 font-normal ml-0.5">/10</span>
+          </span>
+        </div>
+      </div>
+      <span className="text-[9px] text-zinc-400 font-bold mt-1 uppercase tracking-tighter">Mood Score</span>
+    </div>
   );
 }
 
@@ -499,88 +610,132 @@ const StressMeter = ({ uid }: StressMeterProps) => {
       {/* ── Summary Cards ── */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* 7-day avg */}
-        <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 shadow-sm">
-          <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">
-            7-Day Avg Stress
-          </p>
-          <p
-            className="text-3xl font-black tabular-nums"
-            style={{
-              color:
-                avg7StressIndex <= 40 ? "#10b981" :
-                avg7StressIndex <= 70 ? "#f97316" : "#ef4444",
-            }}
-          >
-            {avg7StressIndex}
-            <span className="text-base font-semibold text-zinc-400">/100</span>
-          </p>
-          {trendDiff !== null && (
-            <div className="flex items-center gap-1 mt-1">
-              {trendDiff < 0 ? (
-                <TrendingDown className="w-3 h-3 text-emerald-500" />
-              ) : trendDiff > 0 ? (
-                <TrendingUp className="w-3 h-3 text-red-500" />
-              ) : (
-                <Minus className="w-3 h-3 text-zinc-400" />
-              )}
-              <span
-                className={`text-xs font-medium ${
-                  trendDiff < 0 ? "text-emerald-500" :
-                  trendDiff > 0 ? "text-red-500" : "text-zinc-400"
-                }`}
+        <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 shadow-sm flex items-center justify-center">
+          <div className="flex items-end gap-x-6">
+            <div className="flex-none">
+              <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">
+                7-Day Avg Stress
+              </p>
+              <p
+                className="text-3xl font-black tabular-nums"
+                style={{
+                  color:
+                    avg7StressIndex <= 40 ? "#10b981" :
+                      avg7StressIndex <= 70 ? "#f97316" : "#ef4444",
+                }}
               >
-                {trendDiff > 0 ? "+" : ""}{trendDiff} vs prev week
-              </span>
+                {avg7StressIndex}
+                <span className="text-base font-semibold text-zinc-400">/100</span>
+              </p>
+              {trendDiff !== null && (
+                <div className="flex items-center gap-1 mt-1">
+                  {trendDiff < 0 ? (
+                    <TrendingDown className="w-3 h-3 text-emerald-500" />
+                  ) : trendDiff > 0 ? (
+                    <TrendingUp className="w-3 h-3 text-red-500" />
+                  ) : (
+                    <Minus className="w-3 h-3 text-zinc-400" />
+                  )}
+                  <span
+                    className={`text-xs font-medium ${trendDiff < 0 ? "text-emerald-500" :
+                      trendDiff > 0 ? "text-red-500" : "text-zinc-400"
+                      }`}
+                  >
+                    {trendDiff > 0 ? "+" : ""}{trendDiff} vs last 7 days
+                  </span>
+                </div>
+              )}
             </div>
-          )}
+            <TrendMiniChart
+              data={days.slice(-7).map(d => d.stressIndex)}
+              color={avg7StressIndex <= 40 ? "#10b981" : avg7StressIndex <= 70 ? "#f97316" : "#ef4444"}
+            />
+          </div>
         </div>
 
         {/* Today */}
-        <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 shadow-sm">
-          <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">
-            Today&apos;s Mood
-          </p>
-          {(() => {
-            const today = days.find((d) => d.date === todayKey);
-            return today && today.totalEvents > 0 ? (
-              <div className="flex items-center gap-2">
-                <span className="text-3xl">{today.dominantEmoji}</span>
-                <div>
-                  <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
-                    {LABEL_MAP[today.dominantEmoji]}
-                  </p>
-                  <p className="text-xs text-zinc-400">
-                    {today.totalEvents} event{today.totalEvents !== 1 ? "s" : ""}
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <p className="text-sm text-zinc-400 mt-2">No data yet today</p>
-            );
-          })()}
+        <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 shadow-sm flex items-center justify-center">
+          <div className="flex items-center gap-x-10">
+            <div className="flex-none">
+              <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">
+                Today&apos;s Mood
+              </p>
+              {(() => {
+                const today = days.find((d) => d.date === todayKey);
+                return today && today.totalEvents > 0 ? (
+                  <div className="flex items-center gap-2">
+                    <span className="text-3xl">{today.dominantEmoji}</span>
+                    <div>
+                      <p className="text-base font-bold text-zinc-800 dark:text-zinc-200">
+                        {LABEL_MAP[today.dominantEmoji]}
+                      </p>
+                      <p className="text-xs text-zinc-400 flex items-center gap-1">
+                        <TrendingDown className="w-3 h-3" />
+                        {today.totalEvents} event{today.totalEvents !== 1 ? "s" : ""} logged
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-sm text-zinc-400 mt-2">No data yet today</p>
+                );
+              })()}
+            </div>
+            {(() => {
+              const today = days.find((d) => d.date === todayKey);
+              const moodScore = (today && today.totalEvents > 0) ? (100 - today.stressIndex) / 10 : null;
+              return <MoodScoreGauge score={moodScore} />;
+            })()}
+          </div>
         </div>
 
         {/* Streak of good days */}
-        <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 shadow-sm">
-          <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">
-            Good Days Streak
-          </p>
-          {(() => {
-            // Count consecutive days from today backwards with stressIndex ≤ 40
-            const reversed = [...days].reverse();
-            let streak = 0;
-            for (const d of reversed) {
-              if (d.totalEvents === 0) break;
-              if (d.stressIndex <= 40) streak++;
-              else break;
-            }
-            return (
-              <div className="flex items-center gap-2">
-                <span className="text-3xl font-black text-emerald-500">{streak}</span>
-                <span className="text-sm text-zinc-500">day{streak !== 1 ? "s" : ""} in a row</span>
+        <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 shadow-sm flex items-center justify-center">
+          <div className="flex items-center gap-x-10">
+            <div className="flex-none">
+              <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">
+                Good Days Streak
+              </p>
+              {(() => {
+                const reversed = [...days].reverse();
+                let streak = 0;
+                for (const d of reversed) {
+                  if (d.totalEvents === 0) break;
+                  if (d.stressIndex <= 40) streak++;
+                  else break;
+                }
+
+                let longest = 0;
+                let currentLongest = 0;
+                for (const d of days) {
+                  if (d.totalEvents > 0 && d.stressIndex <= 40) {
+                    currentLongest++;
+                  } else {
+                    longest = Math.max(longest, currentLongest);
+                    currentLongest = 0;
+                  }
+                }
+                longest = Math.max(longest, currentLongest);
+
+                return (
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-3xl font-black text-emerald-500">{streak}</span>
+                      <span className="text-sm text-zinc-500">day{streak !== 1 ? "s" : ""} in a row</span>
+                    </div>
+                    <p className="text-xs text-zinc-400 mt-1">Longest: {longest} days</p>
+                  </div>
+                );
+              })()}
+            </div>
+            <div className="shrink-0">
+              <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center relative">
+                <Shield className="w-6 h-6 text-emerald-500" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Star className="w-2.5 h-2.5 text-emerald-600 fill-emerald-600 -translate-y-[0.5px]" />
+                </div>
               </div>
-            );
-          })()}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -628,11 +783,11 @@ const StressMeter = ({ uid }: StressMeterProps) => {
         {/* X-axis labels */}
         <div className="flex mt-3 text-[10px] text-zinc-400">
           {isMobile ? (
-             visibleDays.map((day) => (
-               <div key={day.date} className="flex-1 text-center font-medium">
-                 {day.label.split(" ")[0]}
-               </div>
-             ))
+            visibleDays.map((day) => (
+              <div key={day.date} className="flex-1 text-center font-medium">
+                {day.label.split(" ")[0]}
+              </div>
+            ))
           ) : (
             [0, 7, 14, 21, 29].map((i) => (
               <div
