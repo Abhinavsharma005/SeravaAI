@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SeravaAI — Your Supportive Guardian 🛡️🤖
 
-## Getting Started
+**Live Demo**: [serava-ai-lac-theta.vercel.app](https://serava-ai-lac-theta.vercel.app/)
 
-First, run the development server:
+SeravaAI is a comprehensive wellness and safety platform designed to empower users through proactive stress detection, secure evidence management, and empathetic AI support.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🌟 The Problem We Solve
+In an increasingly digital and fast-paced world, individuals often lack:
+1. **Emotional Awareness**: Difficulty in tracking and understanding stress patterns.
+2. **Secure Documentation**: No centralized, tamper-proof way to gather evidence during critical situations.
+3. **Immediate Support**: Lack of accessible, non-judgmental guidance during emotional or physical distress.
+
+**SeravaAI** bridges these gaps by combining advanced emotion tracking with a secure safety net, providing a "Supportive Guardian" always at your side.
+
+---
+
+## 🚀 Core Features
+
+### 📊 Stress Detection Dashboard
+- **Real-time Analytics**: Interactive 30-day and 7-day stress trends.
+- **Mood Tracking**: Deep dives into emotional logs and dominant mood patterns.
+- **Visual Insights**: Compact, information-dense cards showing averages and streaks.
+
+### 🔐 Evidence Vault
+- **Secure Handling**: Organized storage for critical documentation and media.
+- **Privacy First**: Secure uploads and encrypted storage via Cloudinary and MongoDB.
+
+### 💬 Empathetic Chatbot
+- **24/7 AI Companion**: Context-aware support powered by advanced language models.
+- **Emergency Integration**: Fast access to emergency resources directly from the chat interface.
+
+### 🆘 Smart Emergency System
+- **Need Help?**: Instant overlay for critical situations.
+- **Voice-to-Text Integrations**: Streamlined reporting and interaction.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend**: [Next.js 16](https://nextjs.org/) (App Router), [TypeScript](https://www.typescriptlang.org/), [Tailwind CSS](https://tailwindcss.com/)
+- **Backend/API**: Next.js Server Actions & API Routes, [FastAPI](https://fastapi.tiangolo.com/) (AI Services)
+- **Database**: [MongoDB](https://www.mongodb.com/) (Mongoose)
+- **Auth & Storage**: [Firebase](https://firebase.google.com/), [Cloudinary](https://cloudinary.com/)
+- **Communication**: [Twilio](https://www.twilio.com/)
+- **State Management**: [React Hook Form](https://react-hook-form.com/), [Zod](https://zod.dev/)
+
+---
+
+## 🔄 User Flow
+
+1. **Onboarding**: Users sign up and configure their profile.
+2. **Daily Check-ins**: Log moods and stress levels via the interactive dashboard.
+3. **Active Support**: Engage with the AI Chatbot for emotional guidance or crisis management.
+4. **Evidence Gathering**: Securely store media or documents in the Evidence Vault during stressful encounters.
+5. **Emergency Response**: Use the "Need Help?" toggle for immediate assistance.
+
+---
+
+## 📂 Folder Structure
+
+```text
+├── app/               # Next.js App Router (Pages, Layouts, API)
+├── components/        # Reusable UI Components
+│   ├── dashboard/     # Stress, Evidence, and Chat components
+│   └── ui/            # Basic UI primitives (Button, Input, etc.)
+├── lib/               # Utility functions, DB connection, Middlewares
+├── models/            # Mongoose Schemas (User, Evidence, Stress)
+├── public/            # Static assets (Images, Icons)
+├── scripts/           # Maintenance and migration scripts
+└── Dockerfile         # Production container configuration
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🤝 Contributors
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+We are a passionate team of developers dedicated to building impactful AI solutions:
 
-## Learn More
+- **Abhinav Sharma** - Full Stack Developer
+- **Aryan Singh** - Full Stack Developer
+- **Sumit Sharma** - Full Stack Developer
+- **Shreeyansh Asati** - FastAPI & AI Integration
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📄 License
+This project is licensed under the **MIT License**.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## ✨ Support Us
+If you find this project helpful, please consider giving it a ⭐ on GitHub! It helps us continue improving SeravaAI for everyone.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Built with ❤️ for a safer, more aware future.*
