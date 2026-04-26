@@ -38,7 +38,7 @@ export default function DashboardPage() {
   const router = useRouter();
   const [userRecord, setUserRecord] = useState<UserRecord | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("evidence");
+  const [activeTab, setActiveTab] = useState("stress");
   const { theme, setTheme } = useTheme();
   const [isUnlocked, setIsUnlocked] = useState(false);
 
@@ -195,23 +195,23 @@ export default function DashboardPage() {
               </TabsTrigger>
             </TabsList>
 
-            {/* Mobile Dropdown */}
-            <div className="md:hidden">
-              <Select
-                value={activeTab}
-                onValueChange={(val) => val && setActiveTab(val)}
-              >
-                <SelectTrigger className="w-[140px] bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 rounded-full">
-                  <SelectValue placeholder="Select Section" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="evidence">Evidence</SelectItem>
-                  <SelectItem value="stress">Stress</SelectItem>
-                  <SelectItem value="chatbot">Chatbot</SelectItem>
-                  <SelectItem value="emergency">Emergency</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+           {/* Mobile Dropdown */}
+<div className="md:hidden">
+  <Select
+    value={activeTab}
+    onValueChange={(val) => val && setActiveTab(val)}
+  >
+    <SelectTrigger className="w-[140px] bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 rounded-full capitalize">
+      <SelectValue placeholder="Select Section" />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="evidence">Evidence</SelectItem>
+      <SelectItem value="stress">Stress</SelectItem>
+      <SelectItem value="chatbot">Chatbot</SelectItem>
+      <SelectItem value="emergency">Emergency</SelectItem>
+    </SelectContent>
+  </Select>
+</div>
           </div>
 
           <div className="flex items-center justify-end gap-3 flex-1">
