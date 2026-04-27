@@ -37,6 +37,24 @@ In an increasingly digital and fast-paced world, individuals often lack:
 
 ---
 
+## 🤖 AI Service (FastAPI Microservice)
+Our backend is powered by a production-grade AI microservice designed for high resilience and specialized intelligence.
+
+### 🌈 Multi-Layer Emotional Intelligence
+- **HF Emotion Detection**: High-precision core emotion extraction using Hugging Face models.
+- **Gemini Fallback**: Seamless fallback to Google Gemini to ensure zero service interruption.
+- **Risk Assessment**: Intelligent classification of distress levels from `low` to `critical`.
+
+### ⚖️ Smart Legal Support (Indian Kanoon)
+- **Automatic Research**: Real-time retrieval of Indian Central Acts and Rules (e.g., IPC sections) for high-risk situations.
+- **Jargon-Free Explanations**: Complex legal data translated into actionable, empathetic advice.
+
+### 🛡️ Production-Grade Resilience
+- **Triple-Layer Failover**: Dynamically switches between 5 AI models and 3 API keys during outages.
+- **Low Hallucination**: Uses a multi-pass LangGraph workflow to ground AI responses in verified legal text.
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Frontend**: [Next.js 16](https://nextjs.org/) (App Router), [TypeScript](https://www.typescriptlang.org/), [Tailwind CSS](https://tailwindcss.com/)
@@ -63,13 +81,17 @@ In an increasingly digital and fast-paced world, individuals often lack:
 ```text
 ├── app/               # Next.js App Router (Pages, Layouts, API)
 ├── components/        # Reusable UI Components
-│   ├── dashboard/     # Stress, Evidence, and Chat components
-│   └── ui/            # Basic UI primitives (Button, Input, etc.)
-├── lib/               # Utility functions, DB connection, Middlewares
+├── lib/               # Utility functions, DB connection
 ├── models/            # Mongoose Schemas (User, Evidence, Stress)
-├── public/            # Static assets (Images, Icons)
-├── scripts/           # Maintenance and migration scripts
+├── public/            # Static assets
 └── Dockerfile         # Production container configuration
+
+# AI Service (FastAPI Repo Structure)
+├── main.py            # Entry point for FastAPI application
+├── kannon.py          # Indian Kanoon API integration & verification
+├── final_verification.py # Automated E2E testing
+├── model_report.txt   # Performance and accuracy reports
+└── render.yaml        # Blueprint for cloud deployment
 ```
 
 ---
