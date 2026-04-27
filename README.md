@@ -190,30 +190,23 @@ SeravaAI/
 ├── public/                     # Static assets (images, icons)
 ├── scripts/                    # Utility/seeding scripts
 │
+├── Ai-Services/                # 🤖 AI Microservice (FastAPI)
+│   ├── app/
+│   │   ├── models/           # Pydantic request/response models
+│   │   ├── routes/           # FastAPI endpoints (/analyze-chat, etc.)
+│   │   ├── services/         # LangGraph workflow logic
+│   │   ├── utils/            # API wrappers & helpers
+│   │   └── main.py           # Application entry point
+│   ├── final_verification.py # End-to-end test suite
+│   ├── test_kanoon.py        # Indian Kanoon API tests
+│   ├── model_report.txt      # AI performance reports
+│   ├── render.yaml           # Render deployment config
+│   └── requirements.txt      # Python dependencies
+│
 ├── Dockerfile                  # Production container config
 ├── next.config.ts              # Next.js configuration
 ├── tsconfig.json               # TypeScript configuration
 └── package.json                # Dependencies & scripts
-```
- 
-> **AI Microservice** is maintained in a separate repository:
-> 🔗 [shreeyy18-git/Stress-AI-Service](https://github.com/shreeyy18-git/Stress-AI-Service)
- 
-```
-Stress-AI-Service/
-│
-├── app/
-│   ├── models/           # Pydantic request/response models
-│   ├── routes/           # FastAPI endpoints (/analyze-chat, etc.)
-│   ├── services/         # LangGraph workflow logic
-│   ├── utils/            # API wrappers & helpers
-│   └── main.py           # Application entry point
-│
-├── final_verification.py # End-to-end test suite
-├── test_kanoon.py        # Indian Kanoon API tests
-├── model_report.txt      # AI performance reports
-├── render.yaml           # Render deployment config
-└── requirements.txt      # Python dependencies
 ```
 
 
