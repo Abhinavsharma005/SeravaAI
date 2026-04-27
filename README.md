@@ -154,7 +154,8 @@ A production-grade FastAPI microservice powering the intelligence behind SeravaA
    (Support &      (Upload docs,  ("Need Help?"  (Log moods,
    legal guidance)  media safely)  resources)    view trends)
 ```
-
+![System Architecture](./public/assi_architecture.png)
+![User Interaction Sequence](./public/user_interaction_sequence.png)
 ---
 
 ## 📂 Folder Structure
