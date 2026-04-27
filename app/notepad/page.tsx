@@ -17,6 +17,7 @@ import {
   X,
   Menu,
   ChevronLeft,
+  HelpCircle,
 } from "lucide-react";
 
 interface NoteData {
@@ -40,6 +41,7 @@ export default function NotepadPage() {
   const [activeNoteId, setActiveNoteId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [showHelp, setShowHelp] = useState(false);
 
   // Stealth detection
   const [editorContent, setEditorContent] = useState("");
@@ -530,12 +532,22 @@ export default function NotepadPage() {
             )}
           </div>
 
-          {activeNoteId && (
-            <div className="flex items-center gap-3 text-xs text-zinc-600">
-              <span>{wordCount} words</span>
-              <span>{charCount} chars</span>
-            </div>
-          )}
+          <div className="flex items-center gap-4">
+            {activeNoteId && (
+              <div className="hidden sm:flex items-center gap-3 text-[10px] text-zinc-600 border-r border-zinc-800/50 pr-4">
+                <span>{wordCount} words</span>
+                <span>{charCount} chars</span>
+              </div>
+            )}
+            
+            <button
+              onClick={() => setShowHelp(true)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-white text-[#0a0a0a] text-xs font-bold transition-all shadow-sm hover:shadow-white/10"
+            >
+              <HelpCircle className="w-3.5 h-3.5" />
+              Help
+            </button>
+          </div>
         </div>
 
         {/* Editor Body */}
@@ -580,6 +592,59 @@ export default function NotepadPage() {
           </div>
         )}
       </div>
+
+      {/* ── Help Popup Modal ── */}
+      {showHelp && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full max-w-sm bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-lg bg-zinc-100">
+                    <HelpCircle className="w-5 h-5 text-[#0a0a0a]" />
+                  </div>
+                  <h3 className="text-lg font-bold text-zinc-100 tracking-tight">Stealth Navigation</h3>
+                </div>
+                <button 
+                  onClick={() => setShowHelp(false)}
+                  className="p-1 rounded-lg text-zinc-500 hover:text-zinc-300 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              
+              <div className="space-y-4">
+                <p className="text-sm text-zinc-400 leading-relaxed">
+                  To navigate back to your dashboard from this notepad, simply type or paste your <span className="text-zinc-100 font-bold">Secret Key</span> inside curly brackets anywhere in your notes.
+                </p>
+                
+                <div className="p-4 rounded-xl bg-zinc-800/50 border border-zinc-700/50 space-y-2">
+                  <p className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Trigger Format</p>
+                  <code className="block text-lg font-mono text-white">
+                    {`{`}your_secret_key{`}`}
+                  </code>
+                </div>
+                
+                <div className="flex items-start gap-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                  <div className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0" />
+                  <p className="text-xs text-amber-200/80 leading-snug">
+                    Once detected, the app will automatically clean the key and redirect you to the main dashboard.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4 bg-zinc-800/30 border-t border-zinc-800">
+              <button 
+                onClick={() => setShowHelp(false)}
+                className="w-full py-2.5 rounded-xl bg-zinc-100 hover:bg-white text-[#0a0a0a] text-sm font-bold transition-all"
+              >
+                Got it
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
