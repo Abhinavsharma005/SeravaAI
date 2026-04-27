@@ -1,51 +1,103 @@
 # SeravaAI — Your Supportive Guardian 🛡️🤖
 
-**Live Demo**: [serava-ai-lac-theta.vercel.app](https://serava-ai-lac-theta.vercel.app/)
+**An AI-powered wellness and safety platform for proactive stress detection, secure evidence management, and empathetic support.**
 
-SeravaAI is a comprehensive wellness and safety platform designed to empower users through proactive stress detection, secure evidence management, and empathetic AI support.
+---
+ 
+## 📖 About SeravaAI
+ 
+SeravaAI is a comprehensive, full-stack wellness and safety platform built to act as a **24/7 supportive guardian** for its users. In a fast-paced, high-stress world, people often lack tools that help them understand their own emotional patterns, document critical situations safely, or access immediate help when it matters most.
+ 
+SeravaAI bridges that gap — combining cutting-edge **AI emotion intelligence**, **secure evidence vaulting**, and an **empathetic AI chatbot** into one cohesive platform.
+ 
+> 🌐 **Try it live:** [https://serava-ai-lac-theta.vercel.app/](https://serava-ai-lac-theta.vercel.app/)
+ 
 
 ---
 
-## 🌟 The Problem We Solve
-In an increasingly digital and fast-paced world, individuals often lack:
-1. **Emotional Awareness**: Difficulty in tracking and understanding stress patterns.
-2. **Secure Documentation**: No centralized, tamper-proof way to gather evidence during critical situations.
-3. **Immediate Support**: Lack of accessible, non-judgmental guidance during emotional or physical distress.
-
-**SeravaAI** bridges these gaps by combining advanced emotion tracking with a secure safety net, providing a "Supportive Guardian" always at your side.
+## ❗ Problems We Solve
+ 
+| Problem | How SeravaAI Helps |
+|---|---|
+| 😶 No awareness of personal stress patterns | Real-time stress tracking with 7-day & 30-day analytics |
+| 📁 No safe place to store critical documentation | Encrypted Evidence Vault via Cloudinary + MongoDB |
+| 💬 No accessible mental health support | 24/7 empathetic AI chatbot with emergency escalation |
+| ⚖️ No easy access to legal guidance in distress | Automatic Indian Kanoon legal research for high-risk situations |
+| 🚨 Slow emergency response access | One-tap "Need Help?" emergency overlay from anywhere in the app |
 
 ---
 
 ## 🚀 Core Features
-
+ 
 ### 📊 Stress Detection Dashboard
-- **Real-time Analytics**: Interactive 30-day and 7-day stress trends.
-- **Mood Tracking**: Deep dives into emotional logs and dominant mood patterns.
-- **Visual Insights**: Compact, information-dense cards showing averages and streaks.
-
+Track your emotional wellbeing with precision and clarity.
+- **Real-time Analytics** — Interactive 30-day and 7-day stress trend visualizations
+- **Mood Logging** — Deep-dive into daily emotional patterns and dominant moods
+- **Visual Insights** — Compact cards displaying stress averages, mood streaks, and distribution
+- **Historical Tracking** — Full log of all check-in sessions for long-term pattern detection
 ### 🔐 Evidence Vault
-- **Secure Handling**: Organized storage for critical documentation and media.
-- **Privacy First**: Secure uploads and encrypted storage via Cloudinary and MongoDB.
-
-### 💬 Empathetic Chatbot
-- **24/7 AI Companion**: Context-aware support powered by advanced language models.
-- **Emergency Integration**: Fast access to emergency resources directly from the chat interface.
-
+A secure, organized space for documenting critical situations.
+- **Structured Storage** — Organized handling of documents, photos, and media
+- **Privacy-First** — Encrypted uploads stored via Cloudinary with MongoDB metadata
+- **Quick Retrieval** — Fast, organized access to previously uploaded evidence
+- **Tamper-Proof Logging** — Each entry is timestamped and stored securely
+### 💬 Empathetic AI Chatbot
+An always-available AI companion that understands context and responds with care.
+- **Context-Aware Responses** — Powered by a multi-model AI backend for nuanced conversation
+- **Emergency Integration** — Instant access to emergency resources directly from the chat
+- **Legal Guidance** — Surfaces relevant Indian legal provisions for high-risk scenarios (via Indian Kanoon API)
+- **Crisis Detection** — Intelligent risk classification from `low` to `critical` distress levels
 ### 🆘 Smart Emergency System
-- **Need Help?**: Instant overlay for critical situations.
-- **Voice-to-Text Integrations**: Streamlined reporting and interaction.
+Because seconds matter in a crisis.
+- **One-Tap Overlay** — "Need Help?" button accessible from any screen
+- **Voice-to-Text** — Streamlined reporting for faster interaction during emergencies
+- **Guided Response** — Step-by-step support and resource navigation during distress
+### 🤖 AI Service — Multi-Layer Emotional Intelligence
+A production-grade FastAPI microservice powering the intelligence behind SeravaAI.
+- **HF Emotion Detection** — High-precision emotion extraction using Hugging Face transformer models
+- **Gemini Fallback** — Seamless failover to Google Gemini for zero service interruption
+- **Triple-Layer Failover** — Dynamically switches across 5 AI models and 3 API keys to guarantee uptime
+- **Low Hallucination** — Multi-pass LangGraph workflows ground responses in verified legal text
+- **Jargon-Free Legal Advice** — Complex Indian law translated into plain, actionable guidance
+
 
 ---
 
 
 ## 🛠️ Tech Stack
-
-- **Frontend**: [Next.js 16](https://nextjs.org/) (App Router), [TypeScript](https://www.typescriptlang.org/), [Tailwind CSS](https://tailwindcss.com/)
-- **Backend/API**: Next.js Server Actions & API Routes, [FastAPI](https://fastapi.tiangolo.com/) (AI Services)
-- **Database**: [MongoDB](https://www.mongodb.com/) (Mongoose)
-- **Auth & Storage**: [Firebase](https://firebase.google.com/), [Cloudinary](https://cloudinary.com/)
-- **Communication**: [Twilio](https://www.twilio.com/)
-- **State Management**: [React Hook Form](https://react-hook-form.com/), [Zod](https://zod.dev/)
+ 
+### Frontend & Full-Stack Framework
+| Technology | Purpose |
+|---|---|
+| **Next.js 15** (App Router) | Core framework — SSR, routing, API routes |
+| **TypeScript** | Type-safe development across the codebase |
+| **Tailwind CSS** | Utility-first styling |
+| **React Hook Form + Zod** | Form handling and schema validation |
+ 
+### Backend & AI Services
+| Technology | Purpose |
+|---|---|
+| **Next.js Server Actions** | Seamless server-client data mutations |
+| **FastAPI (Python)** | Dedicated AI microservice for emotion analysis |
+| **LangGraph** | Multi-step AI workflow orchestration |
+| **Hugging Face Models** | Core emotion detection transformers |
+| **Google Gemini** | Fallback LLM for AI responses |
+ 
+### Database & Storage
+| Technology | Purpose |
+|---|---|
+| **MongoDB** (Mongoose) | Primary database for users, moods, evidence metadata |
+| **Cloudinary** | Secure media and file storage |
+| **Firebase** | Authentication |
+ 
+### Infrastructure & Communication
+| Technology | Purpose |
+|---|---|
+| **Vercel** | Frontend deployment & hosting |
+| **Docker** | Containerization of AI service |
+| **Twilio** | SMS/communication integrations |
+| **Indian Kanoon API** | Real-time Indian legal case and statute retrieval |
+ 
 
 ---
 
@@ -60,50 +112,64 @@ In an increasingly digital and fast-paced world, individuals often lack:
 ---
 
 ## 📂 Folder Structure
-
-```text
-├── app/               # Next.js App Router (Pages, Layouts, API)
-├── components/        # Reusable UI Components
-├── lib/               # Utility functions, DB connection
-├── models/            # Mongoose Schemas (User, Evidence, Stress)
-├── public/            # Static assets
-└── Dockerfile         # Production container configuration
+ 
 ```
-
----
-
-
-## 🤖 AI Service (FastAPI Microservice) — [GitHub Repo](https://github.com/shreeyy18-git/Stress-AI-Service)
-Our backend is powered by a production-grade AI microservice designed for high resilience and specialized intelligence.
-
-### 🌈 Multi-Layer Emotional Intelligence
-- **HF Emotion Detection**: High-precision core emotion extraction using Hugging Face models.
-- **Gemini Fallback**: Seamless fallback to Google Gemini to ensure zero service interruption.
-- **Risk Assessment**: Intelligent classification of distress levels from `low` to `critical`.
-
-### ⚖️ Smart Legal Support (Indian Kanoon)
-- **Automatic Research**: Real-time retrieval of Indian Central Acts and Rules (e.g., IPC sections) for high-risk situations.
-- **Jargon-Free Explanations**: Complex legal data translated into actionable, empathetic advice.
-
-### 🛡️ Production-Grade Resilience
-- **Triple-Layer Failover**: Dynamically switches between 5 AI models and 3 API keys during outages.
-- **Low Hallucination**: Uses a multi-pass LangGraph workflow to ground AI responses in verified legal text.
-
-### 📂 AI Service Repository Structure
-```text
-.
-├── app/                  # Core FastAPI application logic
-│   ├── models/           # Pydantic models for request/response
-│   ├── routes/           # API endpoints (e.g., /analyze-chat)
-│   ├── services/         # Business logic & LangGraph workflows
-│   ├── utils/            # Helper functions & external API wrappers
+SeravaAI/
+│
+├── app/                        # Next.js App Router
+│   ├── (auth)/                 # Authentication pages (login, signup)
+│   ├── (dashboard)/            # Protected dashboard pages
+│   │   ├── stress/             # Stress tracking & analytics
+│   │   ├── vault/              # Evidence vault
+│   │   └── chat/               # AI chatbot interface
+│   ├── api/                    # Next.js API route handlers
+│   └── layout.tsx              # Root layout
+│
+├── components/                 # Reusable UI Components
+│   ├── ui/                     # Base design system components
+│   ├── dashboard/              # Dashboard-specific components
+│   ├── chat/                   # Chatbot UI components
+│   └── vault/                  # Evidence vault components
+│
+├── lib/                        # Utilities & Configuration
+│   ├── db.ts                   # MongoDB connection
+│   ├── cloudinary.ts           # Cloudinary config
+│   └── utils.ts                # Shared helper functions
+│
+├── models/                     # Mongoose Schemas
+│   ├── User.ts                 # User model
+│   ├── MoodLog.ts              # Mood/stress entry model
+│   └── Evidence.ts             # Evidence vault model
+│
+├── public/                     # Static assets (images, icons)
+├── scripts/                    # Utility/seeding scripts
+│
+├── Dockerfile                  # Production container config
+├── next.config.ts              # Next.js configuration
+├── tsconfig.json               # TypeScript configuration
+└── package.json                # Dependencies & scripts
+```
+ 
+> **AI Microservice** is maintained in a separate repository:
+> 🔗 [shreeyy18-git/Stress-AI-Service](https://github.com/shreeyy18-git/Stress-AI-Service)
+ 
+```
+Stress-AI-Service/
+│
+├── app/
+│   ├── models/           # Pydantic request/response models
+│   ├── routes/           # FastAPI endpoints (/analyze-chat, etc.)
+│   ├── services/         # LangGraph workflow logic
+│   ├── utils/            # API wrappers & helpers
 │   └── main.py           # Application entry point
-├── final_verification.py # Automated E2E testing script
-├── model_report.txt      # AI performance & accuracy reports
-├── render.yaml           # Deployment configuration for Render
-├── requirements.txt      # Python dependencies
-└── test_kanoon.py        # Indian Kanoon API verification script
+│
+├── final_verification.py # End-to-end test suite
+├── test_kanoon.py        # Indian Kanoon API tests
+├── model_report.txt      # AI performance reports
+├── render.yaml           # Render deployment config
+└── requirements.txt      # Python dependencies
 ```
+
 
 ---
 
