@@ -147,12 +147,12 @@ A production-grade FastAPI microservice powering the intelligence behind SeravaA
                  (Trends, mood history,
                   analytics & insights)
                          │
-          ┌──────────────┼──────────────┐
-          ▼              ▼              ▼
-   💬 Chat with    📁 Evidence    🆘 Emergency
-   AI Companion       Vault          Overlay
-   (Support &      (Upload docs,  ("Need Help?"
-   legal guidance)  media safely)  resources)
+          ┌──────────────┼──────────────┬──────────────┐
+          ▼              ▼              ▼              ▼
+   💬 Chat with    📁 Evidence    🆘 Emergency   📊 Stress
+   AI Companion       Vault          Overlay      Tracker
+   (Support &      (Upload docs,  ("Need Help?"  (Log moods,
+   legal guidance)  media safely)  resources)    view trends)
 ```
 
 ---
