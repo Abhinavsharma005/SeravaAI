@@ -52,6 +52,13 @@ Because seconds matter in a crisis.
 - **One-Tap Overlay** — "Need Help?" button accessible from any screen
 - **Voice-to-Text** — Streamlined reporting for faster interaction during emergencies
 - **Guided Response** — Step-by-step support and resource navigation during distress
+### 📝 Stealth Notes — Secret Note-Making
+A discreet, secret-key protected note-making space designed for users who need privacy at all times.
+- **Secret Key Protection** — Notes are locked behind a user-defined secret key, completely separate from the main login
+- **Stealth Mode Entry** — Every time a user with a secret key visits the site, they land directly on the Notes page — not the dashboard — keeping the feature hidden in plain sight
+- **Instant Disguise** — To any onlooker, the app appears to be just a note-taking tool, concealing the true nature of SeravaAI
+- **Persistent & Private** — Notes are encrypted and tied strictly to the secret key; only the keyholder can access them
+- **Opt-In Feature** — Users without a secret key skip this entirely and go straight to the dashboard
 ### 🤖 AI Service — Multi-Layer Emotional Intelligence
 A production-grade FastAPI microservice powering the intelligence behind SeravaAI.
 - **HF Emotion Detection** — High-precision emotion extraction using Hugging Face transformer models
@@ -105,12 +112,48 @@ A production-grade FastAPI microservice powering the intelligence behind SeravaA
 ---
 
 ## 🔄 User Flow
-
-1. **Onboarding**: Users sign up and configure their profile.
-2. **Daily Check-ins**: Log moods and stress levels via the interactive dashboard.
-3. **Active Support**: Engage with the AI Chatbot for emotional guidance or crisis management.
-4. **Evidence Gathering**: Securely store media or documents in the Evidence Vault during stressful encounters.
-5. **Emergency Response**: Use the "Need Help?" toggle for immediate assistance.
+ 
+```
+┌─────────────────────────────────────────────────┐
+│                  Visit SeravaAI                  │
+└─────────────────────────────────────────────────┘
+                        │
+          ┌─────────────┴─────────────┐
+          ▼                           ▼
+   🆕 New User                 🔁 Returning User
+   (No Account)                (Already Logged In)
+          │                           │
+          ▼                           │
+  1. Sign Up                          │
+     (Name, email, password)          │
+          │                   ┌───────┴────────┐
+          ▼                   ▼                ▼
+  2. Profile Setup    🔑 Has Secret Key   ❌ No Secret Key
+     (Preferences,           │                │
+      emergency              ▼                ▼
+      contacts)      📝 Stealth Notes   📊 Dashboard
+          │              Page           (Main App)
+          │          (App disguised         │
+          │          as note-taking)        │
+          │                                 │
+          └──────────────┬──────────────────┘
+                         ▼
+              3. 📝 Daily Mood Check-in
+                 (Log stress level, dominant
+                  emotion, journal notes)
+                         │
+                         ▼
+              4. 📊 Dashboard Review
+                 (Trends, mood history,
+                  analytics & insights)
+                         │
+          ┌──────────────┼──────────────┐
+          ▼              ▼              ▼
+   💬 Chat with    📁 Evidence    🆘 Emergency
+   AI Companion       Vault          Overlay
+   (Support &      (Upload docs,  ("Need Help?"
+   legal guidance)  media safely)  resources)
+```
 
 ---
 
