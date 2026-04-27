@@ -248,13 +248,11 @@ function StressRing({ index, emoji, label }: { index: number; emoji: string; lab
             const rad = (angle * Math.PI) / 180;
             const outerR = normalizedRadius + stroke / 2 + 4;
             const innerR = normalizedRadius + stroke / 2 + 1;
-            return (
-              <line key={tick}
-                x1={radius + Math.cos(rad) * innerR} y1={radius + Math.sin(rad) * innerR}
-                x2={radius + Math.cos(rad) * outerR} y2={radius + Math.sin(rad) * outerR}
-                strokeWidth={1.5} strokeLinecap="round" className="stroke-zinc-300 dark:stroke-zinc-700"
-              />
-            );
+            const x1 = radius + innerR * Math.cos(rad);
+            const y1 = radius + innerR * Math.sin(rad);
+            const x2 = radius + outerR * Math.cos(rad);
+            const y2 = radius + outerR * Math.sin(rad);
+            return <line key={tick} x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" strokeWidth="1" className="text-zinc-300 dark:text-zinc-600" />;
           })}
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -282,6 +280,46 @@ function StressRing({ index, emoji, label }: { index: number; emoji: string; lab
           ))}
         </div>
       </div>
+    </div>
+  );
+}
+
+// ─── Mood Score Gauge ──────────────────────────────────────────────────────────
+
+function MoodScoreGauge({ score }: { score: number }) {
+  const radius = 32;
+  const stroke = 6;
+  const normalizedRadius = radius - stroke / 2;
+  const circumference = normalizedRadius * 2 * Math.PI;
+  const progress = score / 10;
+  const offset = circumference - progress * circumference;
+
+  return (
+    <div className="flex flex-col items-center gap-1.5">
+      <div className="relative" style={{ width: radius * 2, height: radius * 2 }}>
+        <svg width={radius * 2} height={radius * 2} className="rotate-[-90deg]">
+          <circle
+            cx={radius} cy={radius} r={normalizedRadius}
+            fill="none" stroke="currentColor" strokeWidth={stroke}
+            className="text-zinc-100 dark:text-zinc-800"
+          />
+          <circle
+            cx={radius} cy={radius} r={normalizedRadius}
+            fill="none" stroke="#fbbf24" strokeWidth={stroke}
+            strokeDasharray={`${circumference} ${circumference}`}
+            style={{ strokeDashoffset: offset }}
+            strokeLinecap="round"
+            className="transition-all duration-1000 ease-out"
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="flex items-baseline">
+            <span className="text-lg font-black text-[#f59e0b]">{score.toFixed(1)}</span>
+            <span className="text-[10px] font-bold text-[#f59e0b]/60 ml-0.5">/10</span>
+          </div>
+        </div>
+      </div>
+      <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Mood Score</span>
     </div>
   );
 }
@@ -376,7 +414,7 @@ function GlassCard({ children, className = "", glow }: { children: React.ReactNo
   return (
     <div className={`relative group ${className}`}>
       {glow && <div className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-700" style={{ background: glow }} />}
-      <div className="relative bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-2xl border border-zinc-200/60 dark:border-zinc-800/60 shadow-sm hover:shadow-md transition-shadow duration-300">
+      <div className="relative h-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-2xl border border-zinc-200/60 dark:border-zinc-800/60 shadow-sm hover:shadow-md transition-shadow duration-300">
         {children}
       </div>
     </div>
@@ -1145,9 +1183,9 @@ const StressMeter = ({ uid }: StressMeterProps) => {
       {/* ── Stat Cards ── */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* 7-Day Average */}
-        <GlassCard glow={`${getStressColor(avg7StressIndex)}15`}>
-          <div className="p-5 flex items-center justify-between animate-slide-up" style={{ animationDelay: "100ms" }}>
-            <div>
+        <GlassCard className="h-full" glow={`${getStressColor(avg7StressIndex)}15`}>
+          <div className="p-5 h-full flex items-center justify-between animate-slide-up" style={{ animationDelay: "100ms" }}>
+            <div className="flex flex-col justify-between h-full">
               <p className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-2">7-Day Average</p>
               <div className="flex items-baseline gap-1">
                 <span className="text-4xl font-black tabular-nums" style={{ color: getStressColor(avg7StressIndex) }}>
@@ -1177,13 +1215,13 @@ const StressMeter = ({ uid }: StressMeterProps) => {
         </GlassCard>
 
         {/* Today's Mood */}
-        <GlassCard>
-          <div className="p-5 animate-slide-up" style={{ animationDelay: "200ms" }}>
+        <GlassCard className="h-full">
+          <div className="p-5 h-full flex flex-col justify-between animate-slide-up" style={{ animationDelay: "200ms" }}>
             <p className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-2">Today&apos;s Mood</p>
             {(() => {
               const today = days.find((d) => d.date === todayKey);
               return today && today.totalEvents > 0 ? (
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between w-full flex-1">
                   <div className="flex items-center gap-3">
                     <span className="text-4xl">{today.dominantEmoji}</span>
                     <div>
@@ -1191,15 +1229,10 @@ const StressMeter = ({ uid }: StressMeterProps) => {
                       <p className="text-xs text-zinc-400 mt-0.5">{today.totalEvents} event{today.totalEvents !== 1 ? "s" : ""}</p>
                     </div>
                   </div>
-                  <div className="flex flex-col items-center">
-                    <div className="text-2xl font-black tabular-nums" style={{ color: getStressColor(today.stressIndex) }}>
-                      {Math.round((100 - today.stressIndex) / 10)}
-                    </div>
-                    <span className="text-[9px] text-zinc-400 font-bold uppercase">/10</span>
-                  </div>
+                  <MoodScoreGauge score={(100 - today.stressIndex) / 10} />
                 </div>
               ) : (
-                <div className="flex items-center gap-3 py-2">
+                <div className="flex items-center gap-3 h-full">
                   <div className="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
                     <Heart className="w-5 h-5 text-zinc-300 dark:text-zinc-600" />
                   </div>
@@ -1214,8 +1247,8 @@ const StressMeter = ({ uid }: StressMeterProps) => {
         </GlassCard>
 
         {/* Streak */}
-        <GlassCard glow={streak > 0 ? "#10b98115" : undefined}>
-          <div className="p-5 animate-slide-up" style={{ animationDelay: "300ms" }}>
+        <GlassCard className="h-full" glow={streak > 0 ? "#10b98115" : undefined}>
+          <div className="p-5 h-full flex flex-col justify-between animate-slide-up" style={{ animationDelay: "300ms" }}>
             <p className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-2">Good Days Streak</p>
             <div className="flex items-center justify-between">
               <div>
