@@ -57,6 +57,8 @@ A production-grade FastAPI microservice powering the intelligence behind SeravaA
 - **HF Emotion Detection** — High-precision emotion extraction using Hugging Face transformer models
 - **Gemini Fallback** — Seamless failover to Google Gemini for zero service interruption
 - **Triple-Layer Failover** — Dynamically switches across 5 AI models and 3 API keys to guarantee uptime
+- **3-Layered Agentic AI System** — Orchestrated workflows for highly valuable, accurate, and context-aware responses
+- **Periodic Emotion Validation** — Systemic validation of emotional states to ensure analysis consistency and accuracy
 - **Low Hallucination** — Multi-pass LangGraph workflows ground responses in verified legal text
 - **Jargon-Free Legal Advice** — Complex Indian law translated into plain, actionable guidance
 
@@ -94,6 +96,7 @@ A production-grade FastAPI microservice powering the intelligence behind SeravaA
 | Technology | Purpose |
 |---|---|
 | **Vercel** | Frontend deployment & hosting |
+| **Google Cloud** | Cloud infrastructure and deployment |
 | **Docker** | Containerization of AI service |
 | **Twilio** | SMS/communication integrations |
 | **Indian Kanoon API** | Real-time Indian legal case and statute retrieval |
@@ -180,7 +183,7 @@ We are a passionate team of developers dedicated to building impactful AI soluti
 - **Abhinav Sharma** - Full Stack Developer
 - **Aryan Singh** - Full Stack Developer
 - **Sumit Sharma** - Full Stack Developer
-- **Shreeyansh Asati** - FastAPI & AI Integration
+- **Shreeyansh Asati** - AI/ML Engineer 
 
 ---
 
