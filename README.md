@@ -73,7 +73,7 @@ In an increasingly digital and fast-paced world, individuals often lack:
 ---
 
 
-## 🤖 AI Service (FastAPI Microservice)
+## 🤖 AI Service (FastAPI Microservice) — [GitHub Repo](https://github.com/shreeyy18-git/Stress-AI-Service)
 Our backend is powered by a production-grade AI microservice designed for high resilience and specialized intelligence.
 
 ### 🌈 Multi-Layer Emotional Intelligence
