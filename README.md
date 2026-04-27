@@ -37,39 +37,6 @@ In an increasingly digital and fast-paced world, individuals often lack:
 
 ---
 
-## 🤖 AI Service (FastAPI Microservice)
-Our backend is powered by a production-grade AI microservice designed for high resilience and specialized intelligence.
-
-### 🌈 Multi-Layer Emotional Intelligence
-- **HF Emotion Detection**: High-precision core emotion extraction using Hugging Face models.
-- **Gemini Fallback**: Seamless fallback to Google Gemini to ensure zero service interruption.
-- **Risk Assessment**: Intelligent classification of distress levels from `low` to `critical`.
-
-### ⚖️ Smart Legal Support (Indian Kanoon)
-- **Automatic Research**: Real-time retrieval of Indian Central Acts and Rules (e.g., IPC sections) for high-risk situations.
-- **Jargon-Free Explanations**: Complex legal data translated into actionable, empathetic advice.
-
-### 🛡️ Production-Grade Resilience
-- **Triple-Layer Failover**: Dynamically switches between 5 AI models and 3 API keys during outages.
-- **Low Hallucination**: Uses a multi-pass LangGraph workflow to ground AI responses in verified legal text.
-
-### 📂 AI Service Repository Structure
-```text
-.
-├── app/                  # Core FastAPI application logic
-│   ├── models/           # Pydantic models for request/response
-│   ├── routes/           # API endpoints (e.g., /analyze-chat)
-│   ├── services/         # Business logic & LangGraph workflows
-│   ├── utils/            # Helper functions & external API wrappers
-│   └── main.py           # Application entry point
-├── final_verification.py # Automated E2E testing script
-├── model_report.txt      # AI performance & accuracy reports
-├── render.yaml           # Deployment configuration for Render
-├── requirements.txt      # Python dependencies
-└── test_kanoon.py        # Indian Kanoon API verification script
-```
-
----
 
 ## 🛠️ Tech Stack
 
@@ -101,6 +68,41 @@ Our backend is powered by a production-grade AI microservice designed for high r
 ├── models/            # Mongoose Schemas (User, Evidence, Stress)
 ├── public/            # Static assets
 └── Dockerfile         # Production container configuration
+```
+
+---
+
+
+## 🤖 AI Service (FastAPI Microservice)
+Our backend is powered by a production-grade AI microservice designed for high resilience and specialized intelligence.
+
+### 🌈 Multi-Layer Emotional Intelligence
+- **HF Emotion Detection**: High-precision core emotion extraction using Hugging Face models.
+- **Gemini Fallback**: Seamless fallback to Google Gemini to ensure zero service interruption.
+- **Risk Assessment**: Intelligent classification of distress levels from `low` to `critical`.
+
+### ⚖️ Smart Legal Support (Indian Kanoon)
+- **Automatic Research**: Real-time retrieval of Indian Central Acts and Rules (e.g., IPC sections) for high-risk situations.
+- **Jargon-Free Explanations**: Complex legal data translated into actionable, empathetic advice.
+
+### 🛡️ Production-Grade Resilience
+- **Triple-Layer Failover**: Dynamically switches between 5 AI models and 3 API keys during outages.
+- **Low Hallucination**: Uses a multi-pass LangGraph workflow to ground AI responses in verified legal text.
+
+### 📂 AI Service Repository Structure
+```text
+.
+├── app/                  # Core FastAPI application logic
+│   ├── models/           # Pydantic models for request/response
+│   ├── routes/           # API endpoints (e.g., /analyze-chat)
+│   ├── services/         # Business logic & LangGraph workflows
+│   ├── utils/            # Helper functions & external API wrappers
+│   └── main.py           # Application entry point
+├── final_verification.py # Automated E2E testing script
+├── model_report.txt      # AI performance & accuracy reports
+├── render.yaml           # Deployment configuration for Render
+├── requirements.txt      # Python dependencies
+└── test_kanoon.py        # Indian Kanoon API verification script
 ```
 
 ---
