@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/lib/firebase";
 import Image from "next/image";
+import { Play } from "lucide-react";
 
 /* ─────────────────────────────────────────────
    Hook: intersection observer for scroll-reveal
@@ -282,6 +283,49 @@ function MoodGraph() {
   );
 }
 
+/* ─────────────────────────────────────────────
+   Component: Hero Video with Play Button
+───────────────────────────────────────────── */
+function HeroVideo() {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handlePlay = () => {
+    if (videoRef.current) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  return (
+    <div 
+      className="relative rounded-2xl overflow-hidden shadow-2xl border border-zinc-200/50 group cursor-pointer" 
+      onClick={!isPlaying ? handlePlay : undefined}
+    >
+      <video 
+        ref={videoRef}
+        src="/SeravaAI_demo_video.mp4" 
+        poster="/new_stress_pic.png"
+        controls={isPlaying}
+        playsInline
+        className="w-full h-80 md:h-[500px] object-cover"
+        onPause={() => setIsPlaying(false)}
+        onPlay={() => setIsPlaying(true)}
+      />
+      {!isPlaying && (
+        <>
+          <div className="absolute inset-0 bg-white/30 pointer-events-none" />
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-16 h-16 md:w-20 md:h-20 bg-[#B21563] text-white rounded-full flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-110">
+              <Play className="w-8 h-8 md:w-10 md:h-10 translate-x-[2px]" fill="currentColor" />
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 function HeroSection({ mouse }: { mouse: { x: number; y: number } }) {
   const router = useRouter();
   const heroReveal = useReveal(0.01);
@@ -361,14 +405,8 @@ function HeroSection({ mouse }: { mouse: { x: number; y: number } }) {
       <div
         className={`mt-20 relative w-full max-w-5xl mx-auto transition-all duration-1000 delay-300 ${heroReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
       >
-        <div className="animate-float">
-          <ImagePlaceholder 
-            src="/new_stress_pic.png" 
-            label="Dashboard Preview" 
-            className="w-full h-80 md:h-[500px]" 
-            priority={true}
-            quality={100}
-          />
+        <div>
+          <HeroVideo />
         </div>
         <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-3/4 h-20 bg-[#B21563]/20 rounded-full blur-2xl pointer-events-none" />
       </div>
